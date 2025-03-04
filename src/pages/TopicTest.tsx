@@ -8,7 +8,7 @@ import { allQuestions, topicNames } from '@/data/questions';
 
 interface Answer {
   questionId: number;
-  userAnswer: string;
+  answerIndex: number;
 }
 
 const TopicTest = () => {
@@ -30,8 +30,8 @@ const TopicTest = () => {
     }
   }, [topic, navigate]);
 
-  const handleAnswerSubmit = (id: number, answer: string) => {
-    setAnswers(prev => [...prev.filter(a => a.questionId !== id), { questionId: id, userAnswer: answer }]);
+  const handleAnswerSubmit = (id: number, answerIndex: number) => {
+    setAnswers(prev => [...prev.filter(a => a.questionId !== id), { questionId: id, answerIndex }]);
     
     // If not the last question, advance to next question
     if (currentQuestionIndex < questions.length - 1) {
@@ -77,7 +77,7 @@ const TopicTest = () => {
           <div className="text-center space-y-6 mb-12 animate-fade-up">
             <h1 className="text-3xl font-bold tracking-tight">{topicName} Interview</h1>
             <p className="text-muted-foreground">
-              Answer each question as you would in a real interview. Progress through all questions and submit at the end for feedback.
+              Answer each multiple-choice question. Select the best option and submit your answer.
             </p>
             
             {/* Progress bar */}
@@ -98,7 +98,7 @@ const TopicTest = () => {
               key={questions[currentQuestionIndex].id}
               question={questions[currentQuestionIndex]}
               onAnswerSubmit={handleAnswerSubmit}
-              userAnswer={answers.find(a => a.questionId === questions[currentQuestionIndex].id)?.userAnswer}
+              userAnswerIndex={answers.find(a => a.questionId === questions[currentQuestionIndex].id)?.answerIndex}
               className="animate-fade-up"
             />
             

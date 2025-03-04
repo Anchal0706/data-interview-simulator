@@ -1,13 +1,13 @@
 
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Textarea } from '@/components/ui/textarea';
-import { Check, X } from 'lucide-react';
+import { Check, X, Circle, CircleCheck } from 'lucide-react';
 
 export interface Question {
   id: number;
   question: string;
-  correctAnswer: string;
+  options: string[];
+  correctAnswerIndex: number;
   explanation: string;
   topic: string;
   difficulty: 'easy' | 'medium' | 'hard';
@@ -15,11 +15,11 @@ export interface Question {
 
 interface TestQuestionProps {
   question: Question;
-  onAnswerSubmit: (id: number, answer: string) => void;
-  userAnswer?: string;
+  onAnswerSubmit: (id: number, answerIndex: number) => void;
+  userAnswerIndex?: number;
   feedback?: {
     isCorrect: boolean;
-    correctAnswer: string;
+    correctAnswerIndex: number;
     explanation: string;
   };
   showFeedback?: boolean;
@@ -29,17 +29,23 @@ interface TestQuestionProps {
 export function TestQuestion({ 
   question, 
   onAnswerSubmit, 
-  userAnswer,
+  userAnswerIndex,
   feedback,
   showFeedback = false,
   className 
 }: TestQuestionProps) {
-  const [answer, setAnswer] = useState(userAnswer || '');
-  const [isSubmitted, setIsSubmitted] = useState(!!userAnswer);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | undefined>(userAnswerIndex);
+  const [isSubmitted, setIsSubmitted] = useState(userAnswerIndex !== undefined);
+
+  const handleOptionSelect = (index: number) => {
+    if (isSubmitted) return;
+    setSelectedOptionIndex(index);
+  };
 
   const handleSubmit = () => {
-    if (!answer.trim()) return;
-    onAnswerSubmit(question.id, answer);
+    if (selectedOptionIndex === undefined) return;
+    
+    onAnswerSubmit(question.id, selectedOptionIndex);
     setIsSubmitted(true);
   };
 
@@ -81,42 +87,77 @@ export function TestQuestion({
           )}
         </div>
         
-        <p className="text-foreground">{question.question}</p>
+        <p className="text-foreground whitespace-pre-wrap">{question.question}</p>
         
-        <div className="space-y-2">
-          <Textarea 
-            placeholder="Type your answer here..." 
-            className="min-h-[100px] resize-none"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            disabled={isSubmitted}
-          />
+        <div className="space-y-3 mt-4">
+          {question.options.map((option, index) => (
+            <div 
+              key={index}
+              onClick={() => handleOptionSelect(index)}
+              className={cn(
+                "flex items-start p-3 border rounded-lg cursor-pointer transition-all",
+                selectedOptionIndex === index && !showFeedback && "border-primary bg-primary/5",
+                showFeedback && feedback && (
+                  index === feedback.correctAnswerIndex 
+                    ? "border-green-500 bg-green-50" 
+                    : index === userAnswerIndex && index !== feedback.correctAnswerIndex 
+                      ? "border-red-500 bg-red-50"
+                      : "border-gray-200"
+                ),
+                !isSubmitted && "hover:border-primary hover:bg-primary/5"
+              )}
+            >
+              <div className="h-5 w-5 flex-shrink-0 mt-0.5 mr-3">
+                {showFeedback && feedback ? (
+                  index === feedback.correctAnswerIndex ? (
+                    <CircleCheck className="h-5 w-5 text-green-500" />
+                  ) : index === userAnswerIndex && index !== feedback.correctAnswerIndex ? (
+                    <X className="h-5 w-5 text-red-500" />
+                  ) : (
+                    <Circle className="h-5 w-5 text-gray-300" />
+                  )
+                ) : (
+                  <div className={cn(
+                    "h-5 w-5 rounded-full border border-gray-300 flex items-center justify-center",
+                    selectedOptionIndex === index && "border-primary bg-primary text-white"
+                  )}>
+                    {selectedOptionIndex === index && <Check className="h-3 w-3" />}
+                  </div>
+                )}
+              </div>
+              <span className="text-sm">{option}</span>
+            </div>
+          ))}
           
           {!isSubmitted && (
             <button 
               onClick={handleSubmit}
-              className="primary-button mt-2"
-              disabled={!answer.trim()}
+              className="primary-button mt-4 w-full sm:w-auto"
+              disabled={selectedOptionIndex === undefined}
             >
               Submit Answer
             </button>
           )}
         </div>
         
-        {showFeedback && feedback && !feedback.isCorrect && (
-          <div className="mt-4 p-4 bg-red-50 rounded-lg border border-red-100 animate-fade-in">
-            <h4 className="font-medium text-red-700 mb-1">Correct Answer:</h4>
-            <p className="text-red-600">{feedback.correctAnswer}</p>
-            
-            <h4 className="font-medium text-red-700 mt-3 mb-1">Explanation:</h4>
-            <p className="text-red-600">{feedback.explanation}</p>
-          </div>
-        )}
-        
-        {showFeedback && feedback && feedback.isCorrect && (
-          <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-100 animate-fade-in">
-            <h4 className="font-medium text-green-700 mb-1">Great job!</h4>
-            <p className="text-green-600">{feedback.explanation}</p>
+        {showFeedback && feedback && (
+          <div className={cn(
+            "mt-4 p-4 rounded-lg border animate-fade-in",
+            feedback.isCorrect 
+              ? "bg-green-50 border-green-100" 
+              : "bg-red-50 border-red-100"
+          )}>
+            <h4 className={cn(
+              "font-medium mb-1",
+              feedback.isCorrect ? "text-green-700" : "text-red-700"
+            )}>
+              {feedback.isCorrect ? "Great job!" : "Explanation:"}
+            </h4>
+            <p className={cn(
+              feedback.isCorrect ? "text-green-600" : "text-red-600"
+            )}>
+              {feedback.explanation}
+            </p>
           </div>
         )}
       </div>

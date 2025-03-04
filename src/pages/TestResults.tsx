@@ -9,12 +9,12 @@ import { Check, X, BarChart } from 'lucide-react';
 
 interface Answer {
   questionId: number;
-  userAnswer: string;
+  answerIndex: number;
 }
 
 interface QuestionResult {
   question: any;
-  userAnswer: string;
+  userAnswerIndex: number;
   isCorrect: boolean;
 }
 
@@ -60,11 +60,11 @@ const TestResults = () => {
       const answer = answers.find(a => a.questionId === question.id);
       if (!answer) return null;
       
-      const isCorrect = evaluateAnswer(answer.userAnswer, question.correctAnswer);
+      const isCorrect = answer.answerIndex === question.correctAnswerIndex;
       
       return {
         question,
-        userAnswer: answer.userAnswer,
+        userAnswerIndex: answer.answerIndex,
         isCorrect
       };
     }).filter(Boolean) as QuestionResult[];
@@ -84,24 +84,6 @@ const TestResults = () => {
       position: 'bottom-center',
       duration: 5000
     });
-  };
-  
-  const evaluateAnswer = (userAnswer: string, correctAnswer: string): boolean => {
-    // Same simplified evaluation logic as before
-    const normalizeText = (text: string) => 
-      text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
-    
-    const normalizedUser = normalizeText(userAnswer);
-    const normalizedCorrect = normalizeText(correctAnswer);
-    
-    const keyTerms = normalizedCorrect.split(' ')
-      .filter(word => word.length > 4)
-      .slice(0, 5);
-      
-    const matchCount = keyTerms.filter(term => normalizedUser.includes(term)).length;
-    const matchRatio = matchCount / keyTerms.length;
-    
-    return matchRatio >= 0.4;
   };
   
   // Calculate performance by difficulty
@@ -212,11 +194,11 @@ const TestResults = () => {
                 key={result.question.id}
                 question={result.question}
                 onAnswerSubmit={() => {}} // No-op since we're just displaying
-                userAnswer={result.userAnswer}
+                userAnswerIndex={result.userAnswerIndex}
                 showFeedback={true}
                 feedback={{
                   isCorrect: result.isCorrect,
-                  correctAnswer: result.question.correctAnswer,
+                  correctAnswerIndex: result.question.correctAnswerIndex,
                   explanation: result.question.explanation
                 }}
                 className="animate-fade-up"
