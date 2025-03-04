@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import { FeatureCard } from '@/components/FeatureCard';
@@ -15,7 +14,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto text-center">
           <div className="space-y-6 animate-fade-up">
             <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">
-              Ace Your Data Science Interviews
+              Measure Your Skill for Data Science Interview
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Practice with topic-specific interview questions and receive detailed feedback to improve your skills.
