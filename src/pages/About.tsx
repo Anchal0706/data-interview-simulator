@@ -1,63 +1,118 @@
 
-import { useEffect } from 'react';
+import React from 'react';
 import Navbar from '@/components/Navbar';
 import { Link } from 'react-router-dom';
+import { FeatureCard } from '@/components/FeatureCard';
+import { BrainCircuit, Code, BookOpen, Trophy, BookMarked, Globe } from 'lucide-react';
 
 const About = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
       <Navbar />
       
       <div className="pt-32 pb-20 px-6">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center space-y-6 mb-12 animate-fade-up">
-            <h1 className="text-3xl font-bold tracking-tight">About DataInterviewPro</h1>
-            <p className="text-muted-foreground">
-              We help data science candidates prepare for interviews through realistic practice and immediate feedback.
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center space-y-6 mb-16 animate-fade-up">
+            <h1 className="text-4xl font-bold tracking-tight">About DataInterviewPro</h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Your ultimate companion for data science interview preparation.
+              We help aspiring data professionals ace their technical interviews with 
+              practical, realistic practice questions.
             </p>
           </div>
           
-          <div className="space-y-12 animate-fade-up">
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold">Our Mission</h2>
-              <p>
-                At DataInterviewPro, we believe that everyone deserves access to high-quality interview preparation resources. Our mission is to level the playing field by providing realistic practice experiences for data science candidates at all levels, from entry-level analysts to senior scientists.
+          <div className="space-y-16">
+            {/* Mission Statement */}
+            <section className="space-y-6">
+              <h2 className="text-3xl font-bold tracking-tight text-center">Our Mission</h2>
+              <p className="text-lg text-center max-w-3xl mx-auto">
+                We're on a mission to democratize data science education by providing accessible, 
+                high-quality practice materials for technical interviews. Our goal is to help you 
+                build confidence, identify knowledge gaps, and ultimately land your dream job.
               </p>
-              <p>
-                We're passionate about helping individuals showcase their true potential during interviews by focusing on the technical skills and problem-solving abilities that matter most in the data science field.
+            </section>
+            
+            {/* Features */}
+            <section className="space-y-8">
+              <h2 className="text-3xl font-bold tracking-tight text-center">Why Practice With Us</h2>
+              
+              <div className="grid gap-6 md:grid-cols-2">
+                <FeatureCard
+                  title="Structured Learning Path"
+                  description="Our questions are carefully curated to cover key concepts that appear in real interviews."
+                  icon={<BookMarked size={24} />}
+                />
+                
+                <FeatureCard
+                  title="Multiple Topics"
+                  description="Practice across various domains including Python, Statistics, SQL, and Machine Learning."
+                  icon={<Globe size={24} />}
+                />
+                
+                <FeatureCard
+                  title="Skill Assessment"
+                  description="Get detailed feedback on your answers and identify areas for improvement."
+                  icon={<Trophy size={24} />}
+                />
+                
+                <FeatureCard
+                  title="Real-world Questions"
+                  description="Our questions mirror the style and difficulty of those asked by top tech companies."
+                  icon={<BrainCircuit size={24} />}
+                />
+              </div>
+            </section>
+            
+            {/* Topics */}
+            <section className="space-y-8">
+              <h2 className="text-3xl font-bold tracking-tight text-center">Topics We Cover</h2>
+              
+              <div className="grid gap-6 md:grid-cols-3">
+                <div className="text-center space-y-2 p-6 rounded-lg bg-white shadow-sm">
+                  <div className="inline-flex p-3 rounded-full bg-primary/10 text-primary">
+                    <Code size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold">Python</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Data structures, functions, libraries, and programming best practices
+                  </p>
+                </div>
+                
+                <div className="text-center space-y-2 p-6 rounded-lg bg-white shadow-sm">
+                  <div className="inline-flex p-3 rounded-full bg-primary/10 text-primary">
+                    <BookOpen size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold">Statistics</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Probability, distributions, hypothesis testing, and statistical inference
+                  </p>
+                </div>
+                
+                <div className="text-center space-y-2 p-6 rounded-lg bg-white shadow-sm">
+                  <div className="inline-flex p-3 rounded-full bg-primary/10 text-primary">
+                    <BrainCircuit size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold">Machine Learning</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Algorithms, model evaluation, feature engineering, and best practices
+                  </p>
+                </div>
+              </div>
+            </section>
+            
+            {/* Call to Action */}
+            <section className="text-center space-y-6 mt-12">
+              <h2 className="text-3xl font-bold">Ready to Test Your Skills?</h2>
+              <p className="text-lg max-w-2xl mx-auto">
+                Start practicing now with our topic-specific mock interviews and build the 
+                confidence you need to ace your next data science interview.
               </p>
+              <div className="mt-8">
+                <Link to="/topic-selection" className="primary-button text-lg px-8 py-3">
+                  Start Practicing
+                </Link>
+              </div>
             </section>
-            
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold">Why Practice With Us</h2>
-              <ul className="list-disc list-inside space-y-2 pl-4">
-                <li><strong>Industry-Relevant Questions</strong> - Our questions are sourced from actual interviews at leading tech companies and startups.</li>
-                <li><strong>Immediate Feedback</strong> - Learn from your mistakes in real-time with detailed explanations and correct answers.</li>
-                <li><strong>Comprehensive Coverage</strong> - Practice across various data science domains including machine learning, statistics, SQL, and problem-solving.</li>
-                <li><strong>Zero Pressure Environment</strong> - Build confidence by practicing in a stress-free setting before your high-stakes interviews.</li>
-              </ul>
-            </section>
-            
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold">How It Works</h2>
-              <ol className="list-decimal list-inside space-y-2 pl-4">
-                <li><strong>Take the Mock Test</strong> - Answer a series of data science interview questions.</li>
-                <li><strong>Submit Your Answers</strong> - Provide responses as you would in a real interview.</li>
-                <li><strong>Receive Instant Feedback</strong> - Get immediate feedback on each answer, including the correct solution and explanation.</li>
-                <li><strong>Review Your Performance</strong> - Analyze your results to identify areas for improvement.</li>
-                <li><strong>Practice Regularly</strong> - Return often to reinforce your knowledge and build confidence.</li>
-              </ol>
-            </section>
-            
-            <div className="text-center pt-8">
-              <Link to="/mock-test" className="primary-button">
-                Start Practicing Now
-              </Link>
-            </div>
           </div>
         </div>
       </div>
