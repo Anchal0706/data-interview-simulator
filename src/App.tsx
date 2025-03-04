@@ -9,6 +9,8 @@ import TopicSelection from "./pages/TopicSelection";
 import TopicTest from "./pages/TopicTest";
 import TestResults from "./pages/TestResults";
 import About from "./pages/About";
+import OnlineSources from "./pages/OnlineSources";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/mock-test/:topic" element={<TopicTest />} />
           <Route path="/mock-test/:topic/results" element={<TestResults />} />
           <Route path="/about" element={<About />} />
+          <Route path="/sources" element={<OnlineSources />} />
+          <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

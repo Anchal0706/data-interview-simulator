@@ -46,6 +46,12 @@ export default function Navbar() {
           <Link to="/mock-test" className="text-foreground/80 hover:text-foreground transition-colors">
             Mock Test
           </Link>
+          <Link to="/sources" className="text-foreground/80 hover:text-foreground transition-colors">
+            Resources
+          </Link>
+          <Link to="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
+            Contact
+          </Link>
           <Link to="/about" className="text-foreground/80 hover:text-foreground transition-colors">
             About
           </Link>
