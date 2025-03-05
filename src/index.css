@@ -58,6 +58,13 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  
+  /* Add viewport-height utility for mobile devices */
+  html, body, #root {
+    @apply min-h-screen;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
 }
 
 @layer utilities {
@@ -111,6 +118,15 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
+  
+  /* Mobile-friendly padding utilities */
+  .px-responsive {
+    @apply px-4 sm:px-6 md:px-8;
+  }
+  
+  .py-responsive {
+    @apply py-6 sm:py-8 md:py-12;
+  }
 }
 
 /* Button Components */
@@ -121,5 +137,24 @@
   
   .secondary-button {
     @apply inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  }
+}
+
+/* Mobile-specific styles to improve UX on small screens */
+@media (max-width: 640px) {
+  h1 {
+    @apply text-3xl;
+  }
+  
+  h2 {
+    @apply text-2xl;
+  }
+  
+  .mobile-full-width {
+    @apply w-full;
+  }
+  
+  .mobile-stack {
+    @apply flex-col;
   }
 }

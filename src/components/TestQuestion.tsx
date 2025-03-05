@@ -55,11 +55,11 @@ export function TestQuestion({
 
   return (
     <div className={cn(
-      "bg-white rounded-xl p-6 shadow-sm border border-border/60 transition-all",
+      "bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-border/60 transition-all",
       className
     )}>
       <div className="space-y-4">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
           <div>
             <h3 className="text-lg font-medium">Question {displayNumber}</h3>
             <div className="flex items-center gap-2 mt-1">
@@ -136,7 +136,7 @@ export function TestQuestion({
           {!isSubmitted && (
             <button 
               onClick={handleSubmit}
-              className="primary-button mt-4 w-full sm:w-auto"
+              className="primary-button mt-4 w-full"
               disabled={selectedOptionIndex === undefined}
             >
               Submit Answer
@@ -158,6 +158,7 @@ export function TestQuestion({
               {feedback.isCorrect ? "Great job!" : "Explanation:"}
             </h4>
             <p className={cn(
+              "text-sm",
               feedback.isCorrect ? "text-green-600" : "text-red-600"
             )}>
               {feedback.explanation}
