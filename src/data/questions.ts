@@ -1,11 +1,10 @@
-
 export interface Question {
   id: number;
   question: string;
   options: string[];
   correctAnswerIndex: number;
   explanation: string;
-  topic: 'python' | 'statistics' | 'data_science' | 'machine_learning' | 'sql';
+  topic: 'python' | 'statistics' | 'data_science' | 'machine_learning' | 'sql' | 'mathematics' | 'programming' | 'ethics';
   difficulty: 'easy' | 'medium' | 'hard';
 }
 
@@ -379,20 +378,248 @@ export const sqlQuestions: Question[] = [
   }
 ];
 
-// All questions combined for convenience
+// Mathematics Questions
+export const mathematicsQuestions: Question[] = [
+  {
+    id: 1,
+    topic: 'mathematics',
+    difficulty: 'easy',
+    question: "What is the time complexity of binary search?",
+    options: [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n log n)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Binary search has a time complexity of O(log n) because with each comparison, it eliminates half of the remaining elements from consideration."
+  },
+  {
+    id: 2,
+    topic: 'mathematics',
+    difficulty: 'medium',
+    question: "What does the Singular Value Decomposition (SVD) of a matrix provide?",
+    options: [
+      "Only the determinant of the matrix",
+      "A method to simplify matrix multiplication",
+      "A way to decompose a matrix into simpler, meaningful components",
+      "A technique to solve only square matrices"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "SVD decomposes a matrix into the product of three matrices: U, Σ, and V*, where U and V* are orthogonal matrices and Σ is a diagonal matrix containing singular values. This decomposition reveals important properties of the original matrix."
+  },
+  {
+    id: 3,
+    topic: 'mathematics',
+    difficulty: 'medium',
+    question: "In linear algebra, what is the rank of a matrix?",
+    options: [
+      "The number of rows in the matrix",
+      "The largest value in the matrix",
+      "The number of linearly independent rows or columns",
+      "The determinant of the matrix"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "The rank of a matrix is the maximum number of linearly independent rows (or equivalently, columns) in the matrix. It provides information about the dimensionality of the vector space spanned by its rows or columns."
+  },
+  {
+    id: 4,
+    topic: 'mathematics',
+    difficulty: 'hard',
+    question: "Which of the following is TRUE about eigenvalues and eigenvectors?",
+    options: [
+      "Only square matrices have eigenvalues",
+      "A matrix and its transpose always have the same eigenvectors",
+      "The sum of eigenvalues equals the trace of the matrix",
+      "Eigenvectors corresponding to different eigenvalues are always orthogonal"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "The sum of eigenvalues of a matrix equals the trace of the matrix (the sum of its diagonal elements). This is a key property in linear algebra known as the trace-determinant relation."
+  },
+  {
+    id: 5,
+    topic: 'mathematics',
+    difficulty: 'hard',
+    question: "What is the Markov property in stochastic processes?",
+    options: [
+      "The property that states all events are mutually exclusive",
+      "The property that the future state depends only on the present state, not on the past states",
+      "The property that states all events have equal probability",
+      "The property that the process always converges to a steady state"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The Markov property (or memoryless property) states that the probability of future states depends only on the present state, not on the sequence of events that preceded it. This is fundamental to Markov chains and many stochastic processes."
+  }
+];
+
+// Programming & Software Development Questions
+export const programmingQuestions: Question[] = [
+  {
+    id: 1,
+    topic: 'programming',
+    difficulty: 'easy',
+    question: "What is the difference between compiled and interpreted languages?",
+    options: [
+      "Compiled languages are always faster than interpreted languages",
+      "Interpreted languages require a separate compilation step before execution",
+      "Compiled languages are translated to machine code before execution, while interpreted languages are translated at runtime",
+      "Interpreted languages can't handle object-oriented programming"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Compiled languages (like C++ or Rust) translate code to machine code before execution, while interpreted languages (like Python or JavaScript) translate code at runtime, line by line. Each approach has its advantages in terms of performance, development speed, and portability."
+  },
+  {
+    id: 2,
+    topic: 'programming',
+    difficulty: 'medium',
+    question: "What are the key principles of SOLID in object-oriented design?",
+    options: [
+      "Security, Optimization, Logging, Inheritance, Deployment",
+      "Single responsibility, Open-closed, Liskov substitution, Interface segregation, Dependency inversion",
+      "Serialization, Optimization, Linking, Indexing, Debugging",
+      "Scoping, Objects, Lists, Interfaces, Delegation"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "SOLID stands for: Single Responsibility Principle (a class should have one reason to change), Open/Closed Principle (open for extension, closed for modification), Liskov Substitution Principle (derived classes must be substitutable for base classes), Interface Segregation Principle (clients shouldn't depend on interfaces they don't use), and Dependency Inversion Principle (depend on abstractions, not concretions)."
+  },
+  {
+    id: 3,
+    topic: 'programming',
+    difficulty: 'medium',
+    question: "What is the purpose of a version control system like Git?",
+    options: [
+      "To optimize code compilation speed",
+      "To automatically fix bugs in code",
+      "To track changes, manage different versions, and facilitate collaboration",
+      "To enforce specific programming paradigms"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Version control systems like Git track changes to a codebase over time, allow developers to work on different versions (branches) simultaneously, and provide tools to merge changes and resolve conflicts, facilitating collaborative software development."
+  },
+  {
+    id: 4,
+    topic: 'programming',
+    difficulty: 'hard',
+    question: "Which of the following best describes the CAP theorem in distributed systems?",
+    options: [
+      "You can have at most two of: Consistency, Availability, and Partition tolerance",
+      "Consistency And Persistence are the only important factors in database design",
+      "Cached Applications Perform better than non-cached ones",
+      "Concurrency, Atomicity, and Persistence are guaranteed in all distributed databases"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "The CAP theorem states that a distributed data store can provide at most two out of three guarantees: Consistency (every read receives the most recent write), Availability (every request receives a response), and Partition tolerance (the system continues to operate despite network partitions). This fundamental theorem guides distributed system design choices."
+  },
+  {
+    id: 5,
+    topic: 'programming',
+    difficulty: 'hard',
+    question: "What is the difference between process and thread in concurrent programming?",
+    options: [
+      "Processes share memory space while threads don't",
+      "Threads are slower but more secure than processes",
+      "Processes have their own memory space while threads share memory within a process",
+      "Threads can only be used in interpreted languages"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "A process is an independent execution unit with its own memory space, while threads are lighter execution units that share the memory space of their parent process. This shared memory makes thread communication more efficient but also introduces potential concurrency issues like race conditions."
+  }
+];
+
+// Ethical AI & Data Privacy Questions
+export const ethicsQuestions: Question[] = [
+  {
+    id: 1,
+    topic: 'ethics',
+    difficulty: 'easy',
+    question: "What is algorithmic bias?",
+    options: [
+      "A technical error in algorithm implementation",
+      "The tendency of algorithms to favor faster computational paths",
+      "When algorithms systematically produce results that favor or discriminate against certain groups",
+      "The preference for certain algorithms over others in the data science community"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Algorithmic bias refers to systematic and repeatable errors in computational systems that create unfair or discriminatory outcomes for certain groups. This can happen due to biased training data, feature selection, or model design decisions."
+  },
+  {
+    id: 2,
+    topic: 'ethics',
+    difficulty: 'medium',
+    question: "What does the principle of 'data minimization' refer to in data privacy?",
+    options: [
+      "Using the smallest possible dataset for training models",
+      "Collecting and processing only the data necessary for specified purposes",
+      "Minimizing the number of features used in a model",
+      "Reducing database storage requirements"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data minimization is a principle that organizations should collect and process only the personal data needed for specific, clearly defined purposes. This reduces privacy risks and compliance burdens while respecting individuals' rights."
+  },
+  {
+    id: 3,
+    topic: 'ethics',
+    difficulty: 'medium',
+    question: "What is differential privacy?",
+    options: [
+      "A technique to ensure different users see different content",
+      "A mathematical framework that provides formal privacy guarantees while allowing useful data analysis",
+      "The practice of using different privacy policies for different types of data",
+      "A method to differentiate between public and private data"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Differential privacy is a mathematical framework that adds carefully calibrated noise to data or analysis results so that it's impossible to confidently determine whether any individual's data was included in the dataset, while still allowing accurate aggregate analyses."
+  },
+  {
+    id: 4,
+    topic: 'ethics',
+    difficulty: 'hard',
+    question: "What ethical challenge is presented by the 'black box problem' in AI?",
+    options: [
+      "The environmental impact of large AI models",
+      "The difficulty in understanding and explaining how complex AI models make decisions",
+      "The security vulnerabilities in AI deployment",
+      "The challenge of storing large AI models"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The 'black box problem' refers to the difficulty in understanding how complex AI models (especially deep learning) reach their decisions. This lack of explainability raises ethical concerns about accountability, trust, bias detection, and the ability to contest AI-based decisions."
+  },
+  {
+    id: 5,
+    topic: 'ethics',
+    difficulty: 'hard',
+    question: "What is 'model stealing' in the context of AI ethics?",
+    options: [
+      "When a model is downloaded without permission",
+      "When an attacker creates a replica of a model by querying it and using the responses to train their own model",
+      "When a model's source code is copied",
+      "When a model produces incorrect results"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Model stealing (or model extraction) is an attack where an adversary repeatedly queries a target ML model, observes the outputs, and uses these input-output pairs to train a 'replica' model that functions similarly to the target. This can violate intellectual property rights and enable further attacks."
+  }
+];
+
+// Add the new question sets to the allQuestions object
 export const allQuestions: { [key: string]: Question[] } = {
   python: pythonQuestions,
   statistics: statisticsQuestions,
   data_science: dataScienceQuestions,
   machine_learning: machineLearningQuestions,
-  sql: sqlQuestions
+  sql: sqlQuestions,
+  mathematics: mathematicsQuestions,
+  programming: programmingQuestions,
+  ethics: ethicsQuestions
 };
 
-// Map for displaying friendly topic names
+// Update the topic names map to include the new topics
 export const topicNames: { [key: string]: string } = {
   python: "Python",
   statistics: "Statistics",
   data_science: "Data Science",
   machine_learning: "Machine Learning",
-  sql: "SQL"
+  sql: "SQL",
+  mathematics: "Mathematics",
+  programming: "Programming & Software Development",
+  ethics: "Ethical AI & Data Privacy"
 };

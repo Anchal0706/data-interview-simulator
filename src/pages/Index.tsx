@@ -1,8 +1,9 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import { FeatureCard } from '@/components/FeatureCard';
 import { Link } from 'react-router-dom';
-import { BrainCircuit, LineChart, Trophy, BookOpen, Code, Database } from 'lucide-react';
+import { BrainCircuit, LineChart, Trophy, BookOpen, Code, Database, Pi, FileCode, ShieldCheck } from 'lucide-react';
 
 const Index = () => {
   return (
@@ -30,7 +31,7 @@ const Index = () => {
           </div>
           
           {/* Topic preview */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
+          <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 max-w-5xl mx-auto">
             <Link to="/mock-test/python" className="flex flex-col items-center space-y-2 p-4 rounded-lg hover:bg-white/50 transition-colors">
               <div className="p-3 rounded-full bg-primary/10 text-primary">
                 <Code size={24} />
@@ -64,6 +65,27 @@ const Index = () => {
                 <Database size={24} />
               </div>
               <span className="font-medium">SQL</span>
+            </Link>
+            
+            <Link to="/mock-test/mathematics" className="flex flex-col items-center space-y-2 p-4 rounded-lg hover:bg-white/50 transition-colors">
+              <div className="p-3 rounded-full bg-primary/10 text-primary">
+                <Pi size={24} />
+              </div>
+              <span className="font-medium">Math</span>
+            </Link>
+            
+            <Link to="/mock-test/programming" className="flex flex-col items-center space-y-2 p-4 rounded-lg hover:bg-white/50 transition-colors">
+              <div className="p-3 rounded-full bg-primary/10 text-primary">
+                <FileCode size={24} />
+              </div>
+              <span className="font-medium">Programming</span>
+            </Link>
+            
+            <Link to="/mock-test/ethics" className="flex flex-col items-center space-y-2 p-4 rounded-lg hover:bg-white/50 transition-colors">
+              <div className="p-3 rounded-full bg-primary/10 text-primary">
+                <ShieldCheck size={24} />
+              </div>
+              <span className="font-medium">Ethics & Privacy</span>
             </Link>
           </div>
         </div>

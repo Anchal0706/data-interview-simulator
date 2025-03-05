@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import { FeatureCard } from '@/components/FeatureCard';
 import { topicNames } from '@/data/questions';
-import { Code, BookOpen, Database, BrainCircuit, GitBranch } from 'lucide-react';
+import { Code, BookOpen, Database, BrainCircuit, GitBranch, Pi, FileCode, ShieldCheck } from 'lucide-react';
 
 const TopicSelection = () => {
   useEffect(() => {
@@ -42,6 +42,24 @@ const TopicSelection = () => {
       name: topicNames.sql, 
       icon: <GitBranch size={24} />,
       description: "Test your SQL knowledge with questions on queries, joins, aggregations, and database concepts."
+    },
+    { 
+      id: 'mathematics', 
+      name: topicNames.mathematics, 
+      icon: <Pi size={24} />,
+      description: "Test your mathematical foundations with questions on linear algebra, calculus, optimization, and more."
+    },
+    { 
+      id: 'programming', 
+      name: topicNames.programming, 
+      icon: <FileCode size={24} />,
+      description: "Challenge yourself with questions on software engineering, system design, algorithms, and best practices."
+    },
+    { 
+      id: 'ethics', 
+      name: topicNames.ethics, 
+      icon: <ShieldCheck size={24} />,
+      description: "Explore questions on responsible AI, data privacy, fairness, and ethical considerations in data science."
     }
   ];
 
