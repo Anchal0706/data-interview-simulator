@@ -3,7 +3,7 @@ import React from 'react';
 import Navbar from '@/components/Navbar';
 import { FeatureCard } from '@/components/FeatureCard';
 import { Link } from 'react-router-dom';
-import { BrainCircuit, LineChart, Trophy, BookOpen, Code, Database, Pi, FileCode, ShieldCheck } from 'lucide-react';
+import { BrainCircuit, LineChart, Trophy, BookOpen, Code, Database, Pi, FileCode, ShieldCheck, Lightbulb, BookMarked, Star } from 'lucide-react';
 
 const Index = () => {
   return (
@@ -127,24 +127,40 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Testimonial Section */}
+      {/* Interview Tips Section (New section replacing testimonial) */}
       <section className="py-12 md:py-16 px-4 sm:px-6 bg-white/70 backdrop-blur-sm relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-8 md:mb-12 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500">Success Stories</h2>
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-10 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500">Data Science Interview Tips</h2>
           
-          <div className="glass-card p-4 sm:p-8 rounded-xl">
-            <p className="text-base md:text-lg italic mb-6">
-              "The topic-based approach helped me identify my weak areas and focus my preparation. 
-              After practicing with DataCrack for three weeks, I aced my interview and landed my dream job!"
-            </p>
-            <div className="flex justify-center items-center space-x-4">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-semibold">
-                JS
+          <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-3">
+            <div className="glass-card p-6 rounded-xl flex flex-col items-start">
+              <div className="bg-primary/10 p-3 rounded-full text-primary mb-4">
+                <Lightbulb size={24} />
               </div>
-              <div className="text-left">
-                <p className="font-semibold text-sm md:text-base">Jamie Smith</p>
-                <p className="text-xs md:text-sm text-muted-foreground">Data Scientist at TechCorp</p>
+              <h3 className="text-lg font-medium mb-2">Understand the Fundamentals</h3>
+              <p className="text-muted-foreground">
+                Strong understanding of statistics, probability, and linear algebra will help you solve complex problems during interviews.
+              </p>
+            </div>
+            
+            <div className="glass-card p-6 rounded-xl flex flex-col items-start">
+              <div className="bg-primary/10 p-3 rounded-full text-primary mb-4">
+                <BookMarked size={24} />
               </div>
+              <h3 className="text-lg font-medium mb-2">Prepare Real-world Examples</h3>
+              <p className="text-muted-foreground">
+                Be ready to discuss projects where you've applied data science techniques to solve business problems.
+              </p>
+            </div>
+            
+            <div className="glass-card p-6 rounded-xl flex flex-col items-start">
+              <div className="bg-primary/10 p-3 rounded-full text-primary mb-4">
+                <Star size={24} />
+              </div>
+              <h3 className="text-lg font-medium mb-2">Practice Communication</h3>
+              <p className="text-muted-foreground">
+                The ability to explain complex concepts in simple terms is crucial for data scientists when working with non-technical teams.
+              </p>
             </div>
           </div>
         </div>
