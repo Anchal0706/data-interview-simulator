@@ -55,16 +55,16 @@ export function TestQuestion({
 
   return (
     <div className={cn(
-      "bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-border/60 transition-all",
+      "bg-white rounded-xl p-3 sm:p-4 md:p-6 shadow-sm border border-border/60 transition-all",
       className
     )}>
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
           <div>
-            <h3 className="text-lg font-medium">Question {displayNumber}</h3>
+            <h3 className="text-base sm:text-lg font-medium">Question {displayNumber}</h3>
             <div className="flex items-center gap-2 mt-1">
               <span className={cn(
-                "inline-flex px-2 py-1 text-xs font-medium rounded-full",
+                "inline-flex px-2 py-0.5 text-xs font-medium rounded-full",
                 question.difficulty === 'easy' ? "bg-green-100 text-green-800" :
                 question.difficulty === 'medium' ? "bg-yellow-100 text-yellow-800" :
                 "bg-red-100 text-red-800"
@@ -76,30 +76,30 @@ export function TestQuestion({
           
           {showFeedback && feedback && (
             <div className={cn(
-              "flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium",
+              "flex items-center gap-1 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium",
               feedback.isCorrect 
                 ? "bg-green-50 text-green-600" 
                 : "bg-red-50 text-red-600"
             )}>
               {feedback.isCorrect ? (
-                <Check className="h-4 w-4" />
+                <Check className="h-3 w-3 sm:h-4 sm:w-4" />
               ) : (
-                <X className="h-4 w-4" />
+                <X className="h-3 w-3 sm:h-4 sm:w-4" />
               )}
               {feedback.isCorrect ? 'Correct' : 'Incorrect'}
             </div>
           )}
         </div>
         
-        <p className="text-foreground whitespace-pre-wrap">{question.question}</p>
+        <p className="text-sm sm:text-base text-foreground whitespace-pre-wrap">{question.question}</p>
         
-        <div className="space-y-3 mt-4">
+        <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
           {question.options.map((option, index) => (
             <div 
               key={index}
               onClick={() => handleOptionSelect(index)}
               className={cn(
-                "flex items-start p-3 border rounded-lg cursor-pointer transition-all",
+                "flex items-start p-2 sm:p-3 border rounded-lg cursor-pointer transition-all",
                 selectedOptionIndex === index && !showFeedback && "border-primary bg-primary/5",
                 showFeedback && feedback && (
                   index === feedback.correctAnswerIndex 
@@ -111,32 +111,32 @@ export function TestQuestion({
                 !isSubmitted && "hover:border-primary hover:bg-primary/5"
               )}
             >
-              <div className="h-5 w-5 flex-shrink-0 mt-0.5 mr-3">
+              <div className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 mt-0.5 mr-2 sm:mr-3">
                 {showFeedback && feedback ? (
                   index === feedback.correctAnswerIndex ? (
-                    <CircleCheck className="h-5 w-5 text-green-500" />
+                    <CircleCheck className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
                   ) : index === userAnswerIndex && index !== feedback.correctAnswerIndex ? (
-                    <X className="h-5 w-5 text-red-500" />
+                    <X className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
                   ) : (
-                    <Circle className="h-5 w-5 text-gray-300" />
+                    <Circle className="h-4 w-4 sm:h-5 sm:w-5 text-gray-300" />
                   )
                 ) : (
                   <div className={cn(
-                    "h-5 w-5 rounded-full border border-gray-300 flex items-center justify-center",
+                    "h-4 w-4 sm:h-5 sm:w-5 rounded-full border border-gray-300 flex items-center justify-center",
                     selectedOptionIndex === index && "border-primary bg-primary text-white"
                   )}>
-                    {selectedOptionIndex === index && <Check className="h-3 w-3" />}
+                    {selectedOptionIndex === index && <Check className="h-2 w-2 sm:h-3 sm:w-3" />}
                   </div>
                 )}
               </div>
-              <span className="text-sm">{option}</span>
+              <span className="text-xs sm:text-sm">{option}</span>
             </div>
           ))}
           
           {!isSubmitted && (
             <button 
               onClick={handleSubmit}
-              className="primary-button mt-4 w-full"
+              className="primary-button mt-3 sm:mt-4 w-full"
               disabled={selectedOptionIndex === undefined}
             >
               Submit Answer
@@ -146,7 +146,7 @@ export function TestQuestion({
         
         {showFeedback && feedback && (
           <div className={cn(
-            "mt-4 p-4 rounded-lg border animate-fade-in",
+            "mt-3 sm:mt-4 p-3 sm:p-4 rounded-lg border animate-fade-in",
             feedback.isCorrect 
               ? "bg-green-50 border-green-100" 
               : "bg-red-50 border-red-100"
@@ -158,7 +158,7 @@ export function TestQuestion({
               {feedback.isCorrect ? "Great job!" : "Explanation:"}
             </h4>
             <p className={cn(
-              "text-sm",
+              "text-xs sm:text-sm",
               feedback.isCorrect ? "text-green-600" : "text-red-600"
             )}>
               {feedback.explanation}
