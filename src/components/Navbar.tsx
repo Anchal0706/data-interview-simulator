@@ -36,7 +36,7 @@ export default function Navbar() {
           to="/" 
           className="font-semibold text-xl tracking-tight hover:opacity-80 transition-opacity"
         >
-          DataScienceInterviewPrep
+          DataCrack
         </Link>
         
         <div className="hidden md:flex space-x-8 items-center">

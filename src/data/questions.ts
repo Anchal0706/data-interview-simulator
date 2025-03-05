@@ -79,6 +79,48 @@ export const pythonQuestions: Question[] = [
     ],
     correctAnswerIndex: 1,
     explanation: "In Python, default arguments are evaluated only once when the function is defined, not each time the function is called. So the list x is created once and reused in each call. The first call appends 1 to the empty list, returning [1]. The second call appends 1 to the already modified list, returning [1, 1]."
+  },
+  {
+    id: 6,
+    topic: 'python',
+    difficulty: 'easy',
+    question: "What is the purpose of the 'self' parameter in Python class methods?",
+    options: [
+      "It's a keyword that defines private methods",
+      "It references the instance of the class itself",
+      "It creates a new instance of the class",
+      "It's used to access static methods only"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "In Python, 'self' is a convention (not a keyword) that refers to the instance of the class. It's the first parameter of instance methods and allows you to access instance attributes and methods."
+  },
+  {
+    id: 7,
+    topic: 'python',
+    difficulty: 'medium',
+    question: "What does a list comprehension do in Python?",
+    options: [
+      "Creates a deep copy of a list",
+      "Provides a concise way to create lists based on existing iterables",
+      "Sorts a list in ascending order",
+      "Removes duplicate elements from a list"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "List comprehensions offer a shorter syntax to create a new list based on values of an existing iterable. The syntax [expression for item in iterable if condition] allows filtering and transforming elements in a single line."
+  },
+  {
+    id: 8,
+    topic: 'python',
+    difficulty: 'hard',
+    question: "What is a Python generator and what's the advantage of using one?",
+    options: [
+      "A tool for creating random numbers with better performance than random()",
+      "A class for generating new Python objects at runtime",
+      "A function that returns an iterator that yields items instead of returning a single value",
+      "A built-in utility for spawning multiple processes"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "A Python generator is a function that uses 'yield' to return an iterator that produces a sequence of values when iterated over. Generators are memory efficient because they generate items one at a time and only when needed, rather than storing the entire sequence in memory."
   }
 ];
 
@@ -153,6 +195,48 @@ export const statisticsQuestions: Question[] = [
     ],
     correctAnswerIndex: 2,
     explanation: "Frequentist statistics interprets probability as the long-run frequency of events in repeated experiments, while Bayesian statistics interprets probability as a degree of belief that can be updated with new evidence."
+  },
+  {
+    id: 6,
+    topic: 'statistics',
+    difficulty: 'easy',
+    question: "What is the difference between correlation and causation?",
+    options: [
+      "They are different terms for the same statistical relationship",
+      "Correlation means one variable causes the other, while causation is a weaker relationship",
+      "Correlation shows a statistical relationship between variables, but doesn't imply one causes the other",
+      "Causation can exist without correlation"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Correlation indicates that two variables have a statistical relationship or pattern, but correlation does not imply causation. Just because two variables move together doesn't mean one causes the other - they could both be affected by a third variable or their relationship could be coincidental."
+  },
+  {
+    id: 7,
+    topic: 'statistics',
+    difficulty: 'medium',
+    question: "What is the purpose of bootstrapping in statistics?",
+    options: [
+      "To initialize random variables at the start of a simulation",
+      "To estimate the distribution of a statistic by resampling with replacement",
+      "To transform non-normal data into normal distributions",
+      "To enhance processing speed for large datasets"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Bootstrapping is a resampling technique that involves repeatedly sampling with replacement from the observed data to estimate the sampling distribution of a statistic. This approach allows estimation of standard errors and confidence intervals without assuming a specific distribution."
+  },
+  {
+    id: 8,
+    topic: 'statistics',
+    difficulty: 'hard',
+    question: "What is the purpose of regularization in statistical modeling?",
+    options: [
+      "To simplify the mathematical complexity of statistical computations",
+      "To add constraints to a model to reduce overfitting",
+      "To smooth data points to remove outliers",
+      "To standardize variable scales across different models"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Regularization adds a penalty term to the loss function during model training, discouraging complex models and helping prevent overfitting. Common techniques include L1 (Lasso) and L2 (Ridge) regularization, which add penalties based on coefficient magnitude."
   }
 ];
 
@@ -227,6 +311,48 @@ export const dataScienceQuestions: Question[] = [
     ],
     correctAnswerIndex: 1,
     explanation: "In the bias-variance tradeoff, high bias typically leads to underfitting (not overfitting), while high variance leads to overfitting. The goal is to find the model complexity that minimizes total error."
+  },
+  {
+    id: 6,
+    topic: 'data_science',
+    difficulty: 'easy',
+    question: "What is feature engineering in data science?",
+    options: [
+      "The process of building new ML models using existing features",
+      "The process of creating new features from existing data to improve model performance",
+      "Engineering software solutions for data science problems",
+      "The technical process of deploying machine learning models"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Feature engineering is the process of selecting, transforming, or creating new features from raw data to improve the performance of machine learning models. Good feature engineering can significantly enhance model accuracy and is often more important than the choice of algorithm."
+  },
+  {
+    id: 7,
+    topic: 'data_science',
+    difficulty: 'medium',
+    question: "What is the difference between supervised and unsupervised learning?",
+    options: [
+      "Supervised learning requires human supervision, unsupervised is fully automated",
+      "Supervised learning works with labeled data, while unsupervised learning works with unlabeled data",
+      "Supervised learning is for regression, unsupervised is for classification",
+      "Supervised learning uses decision trees, unsupervised uses neural networks"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "In supervised learning, algorithms learn from labeled data with input-output pairs to make predictions or classifications. In unsupervised learning, algorithms work with unlabeled data to identify patterns, relationships, or structures within the data, such as clustering or dimensionality reduction."
+  },
+  {
+    id: 8,
+    topic: 'data_science',
+    difficulty: 'hard',
+    question: "What is a Receiver Operating Characteristic (ROC) curve used for?",
+    options: [
+      "To visualize hardware performance of data science systems",
+      "To evaluate and compare classification models based on their true positive and false positive rates",
+      "To display the relationship between features in a dataset",
+      "To show how quickly a neural network converges during training"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "An ROC curve plots the true positive rate (sensitivity) against the false positive rate (1 - specificity) at various threshold settings. The area under the ROC curve (AUC) is a common metric for evaluating binary classification models - a higher AUC indicates better model performance."
   }
 ];
 
@@ -301,6 +427,48 @@ export const machineLearningQuestions: Question[] = [
     ],
     correctAnswerIndex: 1,
     explanation: "Boosting methods like AdaBoost and Gradient Boosting build models sequentially, with each new model focusing on correcting the errors made by previous models. This differs from bagging methods like Random Forest, which build models independently."
+  },
+  {
+    id: 6,
+    topic: 'machine_learning',
+    difficulty: 'easy',
+    question: "What is the purpose of a confusion matrix in evaluating classification models?",
+    options: [
+      "To confuse hackers trying to steal the model",
+      "To visualize the learning rate schedule",
+      "To show the distribution of predicted classes vs. actual classes",
+      "To measure the computational complexity of the algorithm"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "A confusion matrix is a table that visualizes the performance of a classification model by showing the counts of true positives, false positives, true negatives, and false negatives. It helps identify which classes the model is confusing with each other and calculate metrics like accuracy, precision, recall, and F1-score."
+  },
+  {
+    id: 7,
+    topic: 'machine_learning',
+    difficulty: 'medium',
+    question: "What is the purpose of dropout in neural networks?",
+    options: [
+      "To completely remove neurons that aren't learning effectively",
+      "To randomly deactivate neurons during training to prevent overfitting",
+      "To drop out of training early when validation loss increases",
+      "To remove input features that don't contribute significantly"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Dropout is a regularization technique where randomly selected neurons are ignored (dropped out) during training. This prevents units from co-adapting too much and forces the network to learn more robust features, reducing overfitting and improving generalization."
+  },
+  {
+    id: 8,
+    topic: 'machine_learning',
+    difficulty: 'hard',
+    question: "What is the 'cold start problem' in recommendation systems?",
+    options: [
+      "When a model takes too long to initialize",
+      "The difficulty of making recommendations for new users or items with little or no history",
+      "Poor performance when the system is first deployed",
+      "When recommendations become outdated over time"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The cold start problem occurs when a recommendation system cannot draw inferences for users or items with insufficient data (new users or items). Solutions include content-based filtering, requesting initial preferences, using demographic information, or hybrid approaches combining multiple techniques."
   }
 ];
 
@@ -375,6 +543,48 @@ export const sqlQuestions: Question[] = [
     ],
     correctAnswerIndex: 2,
     explanation: "A correlated subquery references columns from the outer query and must be re-evaluated for each row processed by the outer query. A non-correlated subquery is independent of the outer query and executes once."
+  },
+  {
+    id: 6,
+    topic: 'sql',
+    difficulty: 'easy',
+    question: "What is the difference between DELETE and TRUNCATE commands in SQL?",
+    options: [
+      "They are identical in function",
+      "DELETE removes specified rows while TRUNCATE removes all rows but keeps the table structure",
+      "TRUNCATE is used for views while DELETE is used for tables",
+      "DELETE is faster than TRUNCATE for large tables"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "DELETE is a DML command that removes specified rows and can be used with a WHERE clause. TRUNCATE is a DDL command that removes all rows, resets identity counters, and is generally faster because it doesn't log individual row deletions. DELETE can be rolled back in a transaction while TRUNCATE typically cannot."
+  },
+  {
+    id: 7,
+    topic: 'sql',
+    difficulty: 'medium',
+    question: "What is the purpose of window functions in SQL?",
+    options: [
+      "To operate on database views rather than tables",
+      "To create pop-up windows in database GUIs",
+      "To perform calculations across a set of rows related to the current row",
+      "To increase query execution speed"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Window functions perform calculations across a set of table rows related to the current row. They're similar to aggregate functions but don't cause rows to become grouped into a single output row - each row retains its separate identity. Examples include RANK(), LEAD(), LAG(), and moving averages."
+  },
+  {
+    id: 8,
+    topic: 'sql',
+    difficulty: 'hard',
+    question: "What is a materialized view in SQL and when would you use it?",
+    options: [
+      "A view that shows only material data (numbers and text) instead of binary data",
+      "A physical copy of the data resulting from a view's query, stored for faster access",
+      "A special view for data related to manufacturing materials",
+      "A view that cannot be modified after creation"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "A materialized view is a database object that contains the results of a query physically stored as a table. Unlike regular views that run their defining query each time they're accessed, materialized views cache the results, making them ideal for complex queries that are expensive to compute but don't need real-time data."
   }
 ];
 
@@ -449,6 +659,48 @@ export const mathematicsQuestions: Question[] = [
     ],
     correctAnswerIndex: 1,
     explanation: "The Markov property (or memoryless property) states that the probability of future states depends only on the present state, not on the sequence of events that preceded it. This is fundamental to Markov chains and many stochastic processes."
+  },
+  {
+    id: 6,
+    topic: 'mathematics',
+    difficulty: 'easy',
+    question: "What is a covariance matrix used for?",
+    options: [
+      "To store only the variance of each variable",
+      "To summarize the variances and correlations between multiple variables",
+      "To perform matrix multiplication more efficiently",
+      "To compute determinants only"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "A covariance matrix is a square matrix that shows the covariance between different variables in a dataset. The diagonal elements represent the variances of individual variables, while off-diagonal elements represent the covariance between pairs of variables. It's crucial for understanding multivariate relationships and is used in techniques like PCA and multivariate Gaussian distributions."
+  },
+  {
+    id: 7,
+    topic: 'mathematics',
+    difficulty: 'medium',
+    question: "What is gradient descent conceptually trying to do?",
+    options: [
+      "Find the global maximum of a function",
+      "Find the nearest local minimum of a function by taking steps proportional to the negative of the gradient",
+      "Calculate the exact roots of polynomial equations",
+      "Convert non-linear functions to linear approximations"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Gradient descent is an optimization algorithm that iteratively moves toward the minimum of a function by taking steps proportional to the negative of the gradient (the steepest descent direction). It's widely used in machine learning to minimize loss functions by updating model parameters in the direction that reduces error."
+  },
+  {
+    id: 8,
+    topic: 'mathematics',
+    difficulty: 'hard',
+    question: "What is the relationship between eigenvalues, eigenvectors, and matrix diagonalization?",
+    options: [
+      "Eigenvalues and eigenvectors are unrelated to diagonalization",
+      "A matrix can be diagonalized only if it has no eigenvalues",
+      "A matrix can be diagonalized if and only if it has n linearly independent eigenvectors, where n is the matrix dimension",
+      "Diagonalization requires calculating the determinant, but not eigenvalues"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "A square matrix A can be diagonalized if and only if it has n linearly independent eigenvectors (where n is the dimension of A). If P is the matrix whose columns are these eigenvectors, and D is the diagonal matrix of corresponding eigenvalues, then A = PDP^(-1). This decomposition is useful for computing powers of A, solving differential equations, and analyzing dynamical systems."
   }
 ];
 
@@ -523,6 +775,48 @@ export const programmingQuestions: Question[] = [
     ],
     correctAnswerIndex: 2,
     explanation: "A process is an independent execution unit with its own memory space, while threads are lighter execution units that share the memory space of their parent process. This shared memory makes thread communication more efficient but also introduces potential concurrency issues like race conditions."
+  },
+  {
+    id: 6,
+    topic: 'programming',
+    difficulty: 'easy',
+    question: "What is the purpose of version control systems like Git?",
+    options: [
+      "To make backups of code in case of computer failure",
+      "To restrict who can view and modify the code",
+      "To track changes, manage different versions, and facilitate collaboration",
+      "To automatically optimize code for faster execution"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Version control systems like Git track changes to files over time, allowing developers to see history, revert to previous versions, work on different features simultaneously through branching, and collaborate without overwriting each other's work. They're essential for modern software development workflows and team collaboration."
+  },
+  {
+    id: 7,
+    topic: 'programming',
+    difficulty: 'medium',
+    question: "What is the time complexity of binary search?",
+    options: [
+      "O(n)",
+      "O(log n)",
+      "O(n log n)",
+      "O(1)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Binary search has a time complexity of O(log n) because with each comparison, it eliminates half of the remaining elements from consideration. This makes it significantly more efficient than linear search (O(n)) for large sorted arrays, as the logarithmic growth rate is much slower than linear growth."
+  },
+  {
+    id: 8,
+    topic: 'programming',
+    difficulty: 'hard',
+    question: "What is the eventual consistency model in distributed systems?",
+    options: [
+      "A model where all nodes in a distributed system see the same data immediately",
+      "A consistency model guaranteeing that once no new updates are made to an object, all accesses will return the last updated value",
+      "A model where data is eventually deleted to save storage space",
+      "A system that prioritizes consistency over availability"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Eventual consistency is a consistency model used in distributed systems that guarantees that, if no new updates are made to a given data item, eventually all accesses to that item will return the last updated value. This model allows for better availability and partition tolerance in distributed systems, as described by the CAP theorem, but sacrifices immediate consistency."
   }
 ];
 
@@ -597,6 +891,48 @@ export const ethicsQuestions: Question[] = [
     ],
     correctAnswerIndex: 1,
     explanation: "Model stealing (or model extraction) is an attack where an adversary repeatedly queries a target ML model, observes the outputs, and uses these input-output pairs to train a 'replica' model that functions similarly to the target. This can violate intellectual property rights and enable further attacks."
+  },
+  {
+    id: 6,
+    topic: 'ethics',
+    difficulty: 'easy',
+    question: "What is 'data anonymization' and why is it important?",
+    options: [
+      "The process of encrypting data so only authorized users can read it",
+      "The practice of modifying data so that individuals cannot be identified from it",
+      "The deletion of unnecessary data to save storage space",
+      "The concept of keeping data in secure offline storage"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data anonymization is the process of removing or modifying personally identifiable information (PII) from datasets so that individuals cannot be identified. This is crucial for protecting privacy while still allowing data analysis, and is often required by regulations like GDPR and HIPAA when working with sensitive information."
+  },
+  {
+    id: 7,
+    topic: 'ethics',
+    difficulty: 'medium',
+    question: "What is 'fairness' in the context of machine learning?",
+    options: [
+      "Ensuring that all users pay an equal price for using the ML system",
+      "Guaranteeing that the model uses an equal number of features for each prediction",
+      "Making sure that the model treats all individuals and groups in an unbiased manner",
+      "Building models that produce the same output regardless of input"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Fairness in machine learning refers to ensuring that models don't discriminate against or systematically disadvantage certain individuals or groups based on sensitive attributes like race, gender, age, etc. There are various mathematical definitions of fairness, including demographic parity, equal opportunity, and equalized odds, each addressing different aspects of algorithmic bias."
+  },
+  {
+    id: 8,
+    topic: 'ethics',
+    difficulty: 'hard',
+    question: "What is the 'right to be forgotten' in data privacy laws?",
+    options: [
+      "The right of companies to delete unprofitable customer data",
+      "An individual's right to have their personal data erased from systems under certain conditions",
+      "The legal requirement to forget about data breaches after a certain time period",
+      "A conceptual right with no legal standing in any jurisdiction"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The 'right to be forgotten' (or right to erasure) is a principle embodied in privacy regulations like GDPR that gives individuals the right to request deletion of their personal data under certain conditions. Organizations must comply by erasing the data and taking reasonable steps to inform other controllers processing that data. This right balances individual privacy against other rights like freedom of expression and scientific research."
   }
 ];
 

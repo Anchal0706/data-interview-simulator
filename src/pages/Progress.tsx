@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Navbar from '@/components/Navbar';
 import { topicNames } from '@/data/questions';
 import { AlertTriangle, TrendingUp, Lightbulb, Bookmark } from 'lucide-react';
@@ -85,7 +84,7 @@ const Progress = () => {
     }
   };
 
-  // Pie chart data for overall progress
+  // Get overall data for chart
   const getOverallData = () => {
     const totalCorrect = progressData.reduce((sum, topic) => sum + topic.correct, 0);
     const totalIncorrect = progressData.reduce((sum, topic) => sum + topic.incorrect, 0);
@@ -142,7 +141,11 @@ const Progress = () => {
     };
   };
 
-  const COLORS = ['#4f46e5', '#ef4444'];
+  // Light pastel colors for charts
+  const COLORS = {
+    correct: '#D3E4FD',    // Light pastel blue
+    incorrect: '#FFDEE2'    // Light pastel red
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
@@ -151,7 +154,7 @@ const Progress = () => {
       <div className="pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center space-y-6 mb-12 animate-fade-up">
-            <h1 className="text-4xl font-bold tracking-tight">Your Progress Dashboard</h1>
+            <h1 className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500">Your Progress Dashboard</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Track your performance across different interview topics and identify areas for improvement.
             </p>
@@ -187,23 +190,17 @@ const Progress = () => {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="flex justify-center items-center">
                     <ResponsiveContainer width="100%" height={300}>
-                      <PieChart>
-                        <Pie
-                          data={getOverallData()}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          outerRadius={100}
-                          fill="#8884d8"
-                          dataKey="value"
-                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                        >
-                          {getOverallData().map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                        </Pie>
+                      <BarChart
+                        data={getOverallData()}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
                         <Tooltip />
-                      </PieChart>
+                        <Legend />
+                        <Bar dataKey="value" name="Questions" fill={COLORS.correct} />
+                      </BarChart>
                     </ResponsiveContainer>
                   </div>
                   
@@ -259,8 +256,8 @@ const Progress = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="correct" name="Correct" stackId="a" fill="#4f46e5" />
-                    <Bar dataKey="incorrect" name="Incorrect" stackId="a" fill="#ef4444" />
+                    <Bar dataKey="correct" name="Correct" stackId="a" fill={COLORS.correct} />
+                    <Bar dataKey="incorrect" name="Incorrect" stackId="a" fill={COLORS.incorrect} />
                   </BarChart>
                 </ResponsiveContainer>
                 
@@ -340,7 +337,7 @@ const Progress = () => {
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-border/60">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} DataScienceInterviewPrep. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} DataCrack. All rights reserved.</p>
         </div>
       </footer>
     </div>
