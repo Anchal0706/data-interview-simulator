@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import Navbar from '@/components/Navbar';
 import { topicNames } from '@/data/questions';
 import { AlertTriangle, TrendingUp, Lightbulb, Bookmark } from 'lucide-react';
@@ -84,7 +85,7 @@ const Progress = () => {
     }
   };
 
-  // Get overall data for chart
+  // Get overall data for pie chart
   const getOverallData = () => {
     const totalCorrect = progressData.reduce((sum, topic) => sum + topic.correct, 0);
     const totalIncorrect = progressData.reduce((sum, topic) => sum + topic.incorrect, 0);
@@ -146,6 +147,9 @@ const Progress = () => {
     correct: '#D3E4FD',    // Light pastel blue
     incorrect: '#FFDEE2'    // Light pastel red
   };
+  
+  // Pie chart colors
+  const PIE_COLORS = ['#D3E4FD', '#FFDEE2']; // Light pastel blue, Light pastel red
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
@@ -190,17 +194,23 @@ const Progress = () => {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="flex justify-center items-center">
                     <ResponsiveContainer width="100%" height={300}>
-                      <BarChart
-                        data={getOverallData()}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="value" name="Questions" fill={COLORS.correct} />
-                      </BarChart>
+                      <PieChart>
+                        <Pie
+                          data={getOverallData()}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          outerRadius={100}
+                          fill="#8884d8"
+                          dataKey="value"
+                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                        >
+                          {getOverallData().map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                          ))}
+                        </Pie>
+                        <Tooltip formatter={(value) => [`${value} questions`, '']} />
+                      </PieChart>
                     </ResponsiveContainer>
                   </div>
                   

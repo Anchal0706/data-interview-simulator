@@ -52,7 +52,12 @@ const TopicTest = () => {
     
     for (let i = 0; i < questionsToSelect; i++) {
       const randomIndex = Math.floor(Math.random() * tempAvailable.length);
-      selectedQuestions.push(tempAvailable[randomIndex]);
+      // Add new sequential question number (1-5) for display purposes
+      const questionWithUpdatedNumber = {
+        ...tempAvailable[randomIndex],
+        displayNumber: i + 1  // Add a displayNumber property for sequential display
+      };
+      selectedQuestions.push(questionWithUpdatedNumber);
       // Remove selected question from temp array to avoid duplicates
       tempAvailable.splice(randomIndex, 1);
     }
@@ -139,7 +144,10 @@ const TopicTest = () => {
             {/* Only show current question */}
             <TestQuestion
               key={questionSet[currentQuestionIndex].id}
-              question={questionSet[currentQuestionIndex]}
+              question={{
+                ...questionSet[currentQuestionIndex],
+                displayNumber: currentQuestionIndex + 1 // Use displayNumber for showing sequence
+              }}
               onAnswerSubmit={handleAnswerSubmit}
               userAnswerIndex={answers.find(a => a.questionId === questionSet[currentQuestionIndex].id)?.answerIndex}
               className="animate-fade-up"
@@ -186,7 +194,7 @@ const TopicTest = () => {
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-border/60">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} DataScienceInterviewPrep. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} DataCrack. All rights reserved.</p>
         </div>
       </footer>
     </div>

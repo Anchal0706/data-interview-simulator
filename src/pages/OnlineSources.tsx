@@ -1,317 +1,357 @@
-
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
-import { FeatureCard } from '@/components/FeatureCard';
-import { topicNames } from '@/data/questions';
-import { 
-  ExternalLink, 
-  BookOpen, 
-  Database, 
-  BrainCircuit, 
-  Code, 
-  GitBranch,
-  Pi,
-  FileCode,
-  ShieldCheck,
-  Youtube
-} from 'lucide-react';
+import { BookOpen, Youtube, Globe, Code, Database, BrainCircuit, FileCode, ShieldCheck, Pi, Search, LineChart } from 'lucide-react';
 
-interface SourceItem {
-  name: string;
-  url: string;
+// Define resource types
+interface Resource {
+  title: string;
   description: string;
-  type?: 'article' | 'video' | 'course' | 'book';
+  url: string;
+  type: 'video' | 'article' | 'course' | 'book' | 'tool';
 }
 
-interface TopicSources {
-  [key: string]: SourceItem[];
+interface TopicResources {
+  [key: string]: {
+    title: string;
+    icon: React.ReactNode;
+    resources: Resource[];
+  };
 }
 
 const OnlineSources = () => {
-  const [activeTopic, setActiveTopic] = useState<string>('python');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  // Sources data organized by topic
-  const sources: TopicSources = {
-    python: [
-      {
-        name: "Python Documentation",
-        url: "https://docs.python.org/3/",
-        description: "Official Python documentation - comprehensive guide to Python language features.",
-        type: "article"
-      },
-      {
-        name: "Real Python",
-        url: "https://realpython.com/",
-        description: "In-depth tutorials on Python programming concepts, data analysis, and more.",
-        type: "article"
-      },
-      {
-        name: "Python for Data Science Handbook",
-        url: "https://jakevdp.github.io/PythonDataScienceHandbook/",
-        description: "Free online book covering Python basics, NumPy, Pandas, Matplotlib, and Machine Learning.",
-        type: "book"
-      },
-      {
-        name: "Corey Schafer's Python Tutorials",
-        url: "https://www.youtube.com/c/Coreyms",
-        description: "Comprehensive Python tutorial series covering everything from the basics to advanced topics.",
-        type: "video"
-      },
-      {
-        name: "Python Engineer",
-        url: "https://www.youtube.com/c/PythonEngineer",
-        description: "Python tutorials with focus on machine learning, deep learning, and data science applications.",
-        type: "video"
-      }
-    ],
-    statistics: [
-      {
-        name: "Khan Academy Statistics",
-        url: "https://www.khanacademy.org/math/statistics-probability",
-        description: "Free courses on probability, inference, and statistical concepts.",
-        type: "course"
-      },
-      {
-        name: "Seeing Theory",
-        url: "https://seeing-theory.brown.edu/",
-        description: "Visual introduction to probability and statistics with interactive visualizations.",
-        type: "article"
-      },
-      {
-        name: "StatQuest with Josh Starmer",
-        url: "https://www.youtube.com/c/joshstarmer",
-        description: "YouTube channel with clear explanations of complex statistical concepts.",
-        type: "video"
-      },
-      {
-        name: "3Blue1Brown - Probability & Statistics",
-        url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDOjmo3Y6ADm0ScWAlEXf-fp",
-        description: "Visual, intuitive explanations of statistical and mathematical concepts.",
-        type: "video"
-      },
-      {
-        name: "Harvard Statistics 110",
-        url: "https://projects.iq.harvard.edu/stat110/home",
-        description: "Professor Joe Blitzstein's course on probability with video lectures and resources.",
-        type: "course"
-      }
-    ],
-    data_science: [
-      {
-        name: "Towards Data Science",
-        url: "https://towardsdatascience.com/",
-        description: "Medium publication featuring articles on all aspects of data science.",
-        type: "article"
-      },
-      {
-        name: "Kaggle",
-        url: "https://www.kaggle.com/learn",
-        description: "Free courses, competitions, and datasets for hands-on learning.",
-        type: "course"
-      },
-      {
-        name: "DataCamp",
-        url: "https://www.datacamp.com/",
-        description: "Interactive learning platform with courses on R, Python, SQL, and more.",
-        type: "course"
-      },
-      {
-        name: "Data Science at Microsoft",
-        url: "https://www.youtube.com/c/MicrosoftDeveloper/playlists?view=50&sort=dd&shelf_id=5",
-        description: "Microsoft's data science video series covering various topics and technologies.",
-        type: "video"
-      },
-      {
-        name: "Ken Jee - Data Science Career Advice",
-        url: "https://www.youtube.com/c/KenJee1",
-        description: "Career advice, interview tips, and practical projects for aspiring data scientists.",
-        type: "video"
-      }
-    ],
-    machine_learning: [
-      {
-        name: "Machine Learning Mastery",
-        url: "https://machinelearningmastery.com/",
-        description: "Tutorials and practical guides to machine learning algorithms and techniques.",
-        type: "article"
-      },
-      {
-        name: "Andrew Ng's Coursera Courses",
-        url: "https://www.coursera.org/instructor/andrewng",
-        description: "Highly regarded courses on machine learning and deep learning.",
-        type: "course"
-      },
-      {
-        name: "Distill",
-        url: "https://distill.pub/",
-        description: "Clear explanations of machine learning concepts with interactive visualizations.",
-        type: "article"
-      },
-      {
-        name: "Yannic Kilcher - ML Research Papers",
-        url: "https://www.youtube.com/c/YannicKilcher",
-        description: "Detailed explanations of the latest research papers in machine learning.",
-        type: "video"
-      },
-      {
-        name: "Stanford CS229: Machine Learning",
-        url: "https://www.youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU",
-        description: "Stanford's famous machine learning course taught by Andrew Ng.",
-        type: "video"
-      }
-    ],
-    sql: [
-      {
-        name: "Mode Analytics SQL Tutorial",
-        url: "https://mode.com/sql-tutorial/",
-        description: "Interactive SQL tutorial for beginners to advanced users.",
-        type: "course"
-      },
-      {
-        name: "W3Schools SQL Tutorial",
-        url: "https://www.w3schools.com/sql/",
-        description: "Comprehensive SQL tutorial with examples and a try-it-yourself editor.",
-        type: "article"
-      },
-      {
-        name: "SQL Zoo",
-        url: "https://sqlzoo.net/",
-        description: "Interactive SQL exercises for all skill levels.",
-        type: "course"
-      },
-      {
-        name: "Programming with Mosh - SQL",
-        url: "https://www.youtube.com/watch?v=7S_tz1z_5bA",
-        description: "Complete SQL course covering the fundamentals to advanced topics.",
-        type: "video"
-      },
-      {
-        name: "SQL Interview Questions",
-        url: "https://datalemur.com/sql-interview-questions",
-        description: "Practice SQL interview questions from top tech companies with solutions.",
-        type: "article"
-      }
-    ],
-    mathematics: [
-      {
-        name: "3Blue1Brown",
-        url: "https://www.youtube.com/c/3blue1brown",
-        description: "Beautiful, visual explanations of mathematical concepts relevant to data science.",
-        type: "video"
-      },
-      {
-        name: "MIT OpenCourseWare - Linear Algebra",
-        url: "https://ocw.mit.edu/courses/mathematics/18-06-linear-algebra-spring-2010/",
-        description: "Professor Gilbert Strang's renowned course on linear algebra.",
-        type: "course"
-      },
-      {
-        name: "Mathematics for Machine Learning",
-        url: "https://mml-book.github.io/",
-        description: "Free book covering the mathematical foundations needed for machine learning.",
-        type: "book"
-      },
-      {
-        name: "Khan Academy - Calculus & Linear Algebra",
-        url: "https://www.khanacademy.org/math",
-        description: "Free courses on calculus, linear algebra, and other mathematical topics.",
-        type: "course"
-      },
-      {
-        name: "The Matrix Calculus You Need For Deep Learning",
-        url: "https://explained.ai/matrix-calculus/",
-        description: "Practical guide to matrix calculus for deep learning by Jeremy Howard and Terence Parr.",
-        type: "article"
-      }
-    ],
-    programming: [
-      {
-        name: "freeCodeCamp",
-        url: "https://www.freecodecamp.org/",
-        description: "Free, comprehensive coding tutorials and projects across various programming languages.",
-        type: "course"
-      },
-      {
-        name: "System Design Primer",
-        url: "https://github.com/donnemartin/system-design-primer",
-        description: "Learn how to design large-scale systems, prepare for system design interviews.",
-        type: "article"
-      },
-      {
-        name: "Clean Code: A Handbook of Agile Software Craftsmanship",
-        url: "https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882",
-        description: "Robert C. Martin's guide to writing maintainable, professional code.",
-        type: "book"
-      },
-      {
-        name: "Missing Semester of CS Education",
-        url: "https://missing.csail.mit.edu/",
-        description: "MIT course covering essential tools for software development beyond programming languages.",
-        type: "course"
-      },
-      {
-        name: "Tech Interview Pro",
-        url: "https://www.youtube.com/c/TechInterviewPro",
-        description: "Software engineering interview preparation, coding challenges, and career advice.",
-        type: "video"
-      }
-    ],
-    ethics: [
-      {
-        name: "Ethics of AI by MIT",
-        url: "https://www.media.mit.edu/courses/the-ethics-of-ai/",
-        description: "Course materials on ethical considerations in artificial intelligence development.",
-        type: "course"
-      },
-      {
-        name: "Privacy in the Age of Big Data",
-        url: "https://www.privacyinternational.org/",
-        description: "Resources on data privacy rights, regulations, and best practices.",
-        type: "article"
-      },
-      {
-        name: "Fairness and Machine Learning",
-        url: "https://fairmlbook.org/",
-        description: "Free online textbook about fairness in machine learning systems.",
-        type: "book"
-      },
-      {
-        name: "Rachel Thomas: Ethical AI",
-        url: "https://www.youtube.com/watch?v=GZaxIqfG0Fo",
-        description: "Lecture on the ethical considerations in developing and deploying AI systems.",
-        type: "video"
-      },
-      {
-        name: "AI Ethics Guidelines Global Inventory",
-        url: "https://algorithmwatch.org/en/ai-ethics-guidelines-global-inventory/",
-        description: "Collection of AI ethics guidelines from around the world.",
-        type: "article"
-      }
-    ]
+  // Define resources for each topic
+  const topicResources: TopicResources = {
+    python: {
+      title: 'Python',
+      icon: <Code size={20} />,
+      resources: [
+        {
+          title: "Python Crash Course",
+          description: "A fast-paced, thorough introduction to Python that will have you writing programs, solving problems, and making things that work in no time.",
+          url: "https://www.amazon.com/Python-Crash-Course-2nd-Edition/dp/1593276036",
+          type: "book"
+        },
+        {
+          title: "Automate the Boring Stuff with Python",
+          description: "A practical programming guide for automating everyday tasks with Python.",
+          url: "https://automatetheboringstuff.com/",
+          type: "book"
+        },
+        {
+          title: "Corey Schafer's Python Tutorials",
+          description: "Comprehensive YouTube tutorials covering Python basics and advanced topics.",
+          url: "https://www.youtube.com/playlist?list=PL-osiE80TeTsqhIuOqKhjR5TELewWnwOh",
+          type: "video"
+        },
+        {
+          title: "Real Python",
+          description: "A wealth of Python tutorials, articles, and courses for all skill levels.",
+          url: "https://realpython.com/",
+          type: "article"
+        },
+        {
+          title: "Python for Data Science and Machine Learning Bootcamp",
+          description: "Udemy course covering Python for data analysis, visualization, and machine learning.",
+          url: "https://www.udemy.com/course/python-for-data-science-and-machine-learning-bootcamp/",
+          type: "course"
+        },
+      ]
+    },
+    statistics: {
+      title: 'Statistics',
+      icon: <LineChart size={20} />,
+      resources: [
+        {
+          title: "Statistics",
+          description: "Khan Academy's comprehensive statistics course covering descriptive and inferential statistics.",
+          url: "https://www.khanacademy.org/math/statistics-probability",
+          type: "course"
+        },
+        {
+          title: "OpenIntro Statistics",
+          description: "A free, open-source statistics textbook for introductory courses.",
+          url: "https://www.openintro.org/book/os/",
+          type: "book"
+        },
+        {
+          title: "StatQuest with Josh Starmer",
+          description: "YouTube channel explaining statistics concepts in a clear and engaging way.",
+          url: "https://statquest.org/",
+          type: "video"
+        },
+        {
+          title: "Seeing Theory",
+          description: "A visual introduction to probability and statistics.",
+          url: "https://seeing-theory.brown.edu/",
+          type: "article"
+        },
+        {
+          title: "Statistics Done Wrong",
+          description: "A guide to common statistical errors and how to avoid them.",
+          url: "https://www.statisticsdonewrong.com/",
+          type: "book"
+        },
+      ]
+    },
+    data_science: {
+      title: 'Data Science',
+      icon: <Database size={20} />,
+      resources: [
+        {
+          title: "Data Science Specialization",
+          description: "Coursera's popular data science specialization from Johns Hopkins University.",
+          url: "https://www.coursera.org/specializations/jhu-data-science",
+          type: "course"
+        },
+        {
+          title: "The Elements of Statistical Learning",
+          description: "A classic textbook covering many important topics in statistical learning.",
+          url: "https://web.stanford.edu/~hastie/ElemStatLearn/",
+          type: "book"
+        },
+        {
+          title: "Towards Data Science",
+          description: "A Medium publication with articles on data science, machine learning, and AI.",
+          url: "https://towardsdatascience.com/",
+          type: "article"
+        },
+        {
+          title: "Kaggle",
+          description: "A platform for data science competitions, datasets, and tutorials.",
+          url: "https://www.kaggle.com/",
+          type: "tool"
+        },
+        {
+          title: "DataCamp",
+          description: "Online learning platform with courses on data science, machine learning, and programming.",
+          url: "https://www.datacamp.com/",
+          type: "course"
+        },
+      ]
+    },
+    machine_learning: {
+      title: 'Machine Learning',
+      icon: <BrainCircuit size={20} />,
+      resources: [
+        {
+          title: "Machine Learning",
+          description: "Andrew Ng's famous machine learning course on Coursera.",
+          url: "https://www.coursera.org/learn/machine-learning",
+          type: "course"
+        },
+        {
+          title: "Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow",
+          description: "A practical guide to machine learning with Python.",
+          url: "https://www.amazon.com/Hands-Machine-Learning-Scikit-Learn-TensorFlow/dp/1492032646",
+          type: "book"
+        },
+        {
+          title: "Machine Learning Mastery",
+          description: "A website with tutorials and resources for machine learning practitioners.",
+          url: "https://machinelearningmastery.com/",
+          type: "article"
+        },
+        {
+          title: "TensorFlow",
+          description: "Google's open-source machine learning framework.",
+          url: "https://www.tensorflow.org/",
+          type: "tool"
+        },
+        {
+          title: "PyTorch",
+          description: "Facebook's open-source machine learning framework.",
+          url: "https://pytorch.org/",
+          type: "tool"
+        },
+      ]
+    },
+    sql: {
+      title: 'SQL',
+      icon: <Database size={20} />,
+      resources: [
+        {
+          title: "SQLZoo",
+          description: "Interactive SQL tutorial with exercises and examples.",
+          url: "https://sqlzoo.net/",
+          type: "course"
+        },
+        {
+          title: "SQL in 10 Minutes a Day",
+          description: "A step-by-step guide to learning SQL.",
+          url: "https://www.amazon.com/SQL-Minutes-Sams-Teach-Yourself/dp/0672336073",
+          type: "book"
+        },
+        {
+          title: "Mode Analytics SQL Tutorial",
+          description: "A comprehensive SQL tutorial for data analysis.",
+          url: "https://mode.com/sql-tutorial/",
+          type: "article"
+        },
+        {
+          title: "PostgreSQL",
+          description: "The official website for the PostgreSQL database.",
+          url: "https://www.postgresql.org/",
+          type: "tool"
+        },
+        {
+          title: "MySQL",
+          description: "The official website for the MySQL database.",
+          url: "https://www.mysql.com/",
+          type: "tool"
+        },
+      ]
+    },
+    programming: {
+      title: 'Programming & Software Dev',
+      icon: <FileCode size={20} />,
+      resources: [
+        {
+          title: "Clean Code: A Handbook of Agile Software Craftsmanship",
+          description: "Robert C. Martin's classic book on writing clean, maintainable code - essential for all programmers.",
+          url: "https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882",
+          type: "book"
+        },
+        {
+          title: "Data Structures and Algorithms in Python",
+          description: "Comprehensive YouTube course covering essential programming skills for data science.",
+          url: "https://www.youtube.com/watch?v=kQDxmjfkIKY",
+          type: "video"
+        },
+        {
+          title: "System Design for Data Scientists",
+          description: "Article explaining how to approach system design questions in interviews.",
+          url: "https://towardsdatascience.com/system-design-for-data-scientists-237eef9b3179",
+          type: "article"
+        },
+        {
+          title: "Coding Interview University",
+          description: "A complete computer science study plan to become a software engineer.",
+          url: "https://github.com/jwasham/coding-interview-university",
+          type: "article"
+        },
+        {
+          title: "LeetCode",
+          description: "Platform to practice programming problems frequently asked in technical interviews.",
+          url: "https://leetcode.com/",
+          type: "tool"
+        },
+      ]
+    },
+    ethics: {
+      title: 'Ethics & Data Privacy',
+      icon: <ShieldCheck size={20} />,
+      resources: [
+        {
+          title: "Ethics of AI: A Comprehensive Overview",
+          description: "Stanford course on the ethical implications of artificial intelligence systems.",
+          url: "https://www.youtube.com/watch?v=iZBXz2J6mJQ",
+          type: "video"
+        },
+        {
+          title: "Practical Data Ethics",
+          description: "Fast.ai course covering real-world ethical challenges in data science.",
+          url: "https://ethics.fast.ai/",
+          type: "course"
+        },
+        {
+          title: "Fairness and Machine Learning",
+          description: "Comprehensive textbook on limitations and opportunities for fairness in ML.",
+          url: "https://fairmlbook.org/",
+          type: "book"
+        },
+        {
+          title: "Data Privacy in the Age of AI",
+          description: "Article discussing modern challenges to privacy with the rise of AI systems.",
+          url: "https://hbr.org/2022/02/navigating-the-new-landscape-of-ai-platforms",
+          type: "article"
+        },
+        {
+          title: "Ethics in AI Interview Questions",
+          description: "Guide to common ethical questions asked in data science interviews.",
+          url: "https://www.datacamp.com/blog/ethics-in-data-science",
+          type: "article"
+        },
+      ]
+    },
+    mathematics: {
+      title: 'Mathematics',
+      icon: <Pi size={20} />,
+      resources: [
+        {
+          title: "3Blue1Brown: Essence of Linear Algebra",
+          description: "Visual and intuitive explanations of linear algebra concepts crucial for data science.",
+          url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+          type: "video"
+        },
+        {
+          title: "Calculus for Machine Learning",
+          description: "Khan Academy's comprehensive calculus course with applications to ML.",
+          url: "https://www.khanacademy.org/math/multivariable-calculus",
+          type: "course"
+        },
+        {
+          title: "Mathematics for Machine Learning",
+          description: "Book covering the mathematical concepts needed for modern machine learning.",
+          url: "https://mml-book.github.io/",
+          type: "book"
+        },
+        {
+          title: "Probability for Data Science",
+          description: "UC Berkeley's course on probability theory for data science applications.",
+          url: "https://www.youtube.com/playlist?list=PLwRJQ4m4UJjNBPJdt8WamRAt4XKc639wF",
+          type: "video"
+        },
+        {
+          title: "Discrete Mathematics for Computer Science",
+          description: "Harvard's guide to the discrete math concepts used in computer science.",
+          url: "https://www.cs.princeton.edu/courses/archive/fall21/cos340/",
+          type: "course"
+        },
+      ]
+    }
   };
-
-  // Topic icons
-  const topicIcons = {
-    python: <Code size={24} />,
-    statistics: <BookOpen size={24} />,
-    data_science: <Database size={24} />,
-    machine_learning: <BrainCircuit size={24} />,
-    sql: <GitBranch size={24} />,
-    mathematics: <Pi size={24} />,
-    programming: <FileCode size={24} />,
-    ethics: <ShieldCheck size={24} />
-  };
-
-  // Resource type icons
-  const resourceTypeIcons = {
-    article: <BookOpen size={16} className="text-blue-500" />,
-    video: <Youtube size={16} className="text-red-500" />,
-    course: <Database size={16} className="text-green-500" />,
-    book: <BookOpen size={16} className="text-purple-500" />
+  
+  // Get all resource items for search functionality
+  const allResources = Object.values(topicResources).flatMap(topic => 
+    topic.resources.map(resource => ({
+      ...resource,
+      topic: topic.title
+    }))
+  );
+  
+  // Filter resources based on search term and selected topic
+  const filteredResources = allResources.filter(resource => {
+    const matchesSearch = !searchTerm || 
+      resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      resource.description.toLowerCase().includes(searchTerm.toLowerCase());
+      
+    const matchesTopic = !selectedTopic || 
+      Object.keys(topicResources).find(key => 
+        topicResources[key].title === resource.topic
+      ) === selectedTopic;
+      
+    return matchesSearch && matchesTopic;
+  });
+  
+  // Icon component for resource type
+  const ResourceTypeIcon = ({ type }: { type: string }) => {
+    switch (type) {
+      case 'video':
+        return <Youtube size={18} className="text-red-500" />;
+      case 'article':
+        return <BookOpen size={18} className="text-blue-500" />;
+      case 'course':
+        return <BookOpen size={18} className="text-green-500" />;
+      case 'book':
+        return <BookOpen size={18} className="text-purple-500" />;
+      case 'tool':
+        return <Globe size={18} className="text-amber-500" />;
+      default:
+        return <Globe size={18} />;
+    }
   };
 
   return (
@@ -321,85 +361,137 @@ const OnlineSources = () => {
       <div className="pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center space-y-6 mb-12 animate-fade-up">
-            <h1 className="text-4xl font-bold tracking-tight">Learning Resources</h1>
+            <h1 className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500">Learning Resources</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Explore these curated online resources to boost your data science interview preparation.
-              Select a topic to see recommended websites, courses, videos, and tutorials.
+              Explore our curated collection of resources to enhance your knowledge in data science topics.
             </p>
           </div>
           
-          {/* Topic selector */}
-          <div className="flex flex-wrap gap-3 justify-center mb-12">
-            {Object.keys(sources).map((topic) => (
-              <button
-                key={topic}
-                onClick={() => setActiveTopic(topic)}
-                className={`px-4 py-2 rounded-full flex items-center gap-2 transition-colors ${
-                  activeTopic === topic 
-                    ? 'bg-primary text-primary-foreground' 
-                    : 'bg-secondary hover:bg-secondary/80'
-                }`}
-              >
-                {topicIcons[topic as keyof typeof topicIcons]}
-                {topicNames[topic]}
-              </button>
-            ))}
-          </div>
-          
-          {/* Resources for selected topic */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {sources[activeTopic].map((source, index) => (
-              <a 
-                href={source.url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                key={index}
-                className="block"
-              >
-                <FeatureCard
-                  title={(
-                    <div className="flex items-center gap-2">
-                      {source.type && resourceTypeIcons[source.type]}
-                      <span>{source.name}</span>
-                    </div>
-                  )}
-                  description={source.description}
-                  icon={<ExternalLink size={24} />}
-                  className="h-full cursor-pointer hover:bg-primary/5 transition-colors"
+          {/* Search and filter controls */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="relative flex-1">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search size={18} className="text-muted-foreground" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search resources..."
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
-              </a>
-            ))}
-          </div>
-          
-          {/* Resource type legend */}
-          <div className="mt-12 bg-white p-4 rounded-lg shadow-sm">
-            <h3 className="text-lg font-medium mb-3">Resource Types:</h3>
-            <div className="flex flex-wrap gap-6">
-              <div className="flex items-center gap-2">
-                {resourceTypeIcons.article}
-                <span>Articles & Documentation</span>
               </div>
-              <div className="flex items-center gap-2">
-                {resourceTypeIcons.video}
-                <span>Video Tutorials</span>
-              </div>
-              <div className="flex items-center gap-2">
-                {resourceTypeIcons.course}
-                <span>Courses & Interactive Learning</span>
-              </div>
-              <div className="flex items-center gap-2">
-                {resourceTypeIcons.book}
-                <span>Books & Long-form Content</span>
+              
+              <div>
+                <select
+                  className="w-full md:w-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white"
+                  value={selectedTopic || ''}
+                  onChange={(e) => setSelectedTopic(e.target.value || null)}
+                >
+                  <option value="">All Topics</option>
+                  {Object.entries(topicResources).map(([key, topic]) => (
+                    <option key={key} value={key}>{topic.title}</option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
+          
+          {/* Topic sections or filtered results */}
+          {searchTerm || selectedTopic ? (
+            <div className="space-y-8">
+              <h2 className="text-2xl font-semibold">
+                Search Results {filteredResources.length > 0 ? `(${filteredResources.length})` : ''}
+              </h2>
+              
+              {filteredResources.length > 0 ? (
+                <div className="grid gap-6 md:grid-cols-2">
+                  {filteredResources.map((resource, index) => (
+                    <a
+                      key={index}
+                      href={resource.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow flex flex-col h-full"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex items-center gap-2">
+                          <ResourceTypeIcon type={resource.type} />
+                          <span className="text-xs font-medium uppercase text-muted-foreground">
+                            {resource.type}
+                          </span>
+                        </div>
+                        <span className="text-xs text-muted-foreground bg-gray-100 px-2 py-1 rounded-full">
+                          {resource.topic}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-semibold mb-2">{resource.title}</h3>
+                      <p className="text-muted-foreground text-sm flex-grow">{resource.description}</p>
+                      <div className="mt-4 pt-4 border-t border-gray-100 text-primary text-sm">
+                        View Resource →
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 bg-white rounded-lg">
+                  <p className="text-lg text-muted-foreground">No resources match your search criteria.</p>
+                  <button
+                    onClick={() => {setSearchTerm(''); setSelectedTopic(null);}}
+                    className="mt-4 primary-button"
+                  >
+                    Clear Search
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            // Show all topics when no search/filter is active
+            <div className="space-y-16">
+              {Object.entries(topicResources).map(([key, topic]) => (
+                <div key={key} className="space-y-6">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 rounded-full bg-primary/10 text-primary">
+                      {topic.icon}
+                    </div>
+                    <h2 className="text-2xl font-semibold">{topic.title}</h2>
+                  </div>
+                  
+                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {topic.resources.map((resource, index) => (
+                      <a
+                        key={index}
+                        href={resource.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow flex flex-col h-full"
+                      >
+                        <div className="flex items-center gap-2 mb-3">
+                          <ResourceTypeIcon type={resource.type} />
+                          <span className="text-xs font-medium uppercase text-muted-foreground">
+                            {resource.type}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-semibold mb-2">{resource.title}</h3>
+                        <p className="text-muted-foreground text-sm flex-grow">{resource.description}</p>
+                        <div className="mt-4 pt-4 border-t border-gray-100 text-primary text-sm">
+                          View Resource →
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-border/60">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} DataInterviewPro. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} DataCrack. All rights reserved.</p>
         </div>
       </footer>
     </div>
@@ -407,3 +499,20 @@ const OnlineSources = () => {
 };
 
 export default OnlineSources;
+
+function LineChart(props: { size: number }) {
+  return <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={props.size} 
+    height={props.size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+  >
+    <path d="M3 3v18h18" />
+    <path d="m19 9-5 5-4-4-3 3" />
+  </svg>;
+}

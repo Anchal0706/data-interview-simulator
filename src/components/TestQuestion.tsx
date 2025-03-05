@@ -11,6 +11,7 @@ export interface Question {
   explanation: string;
   topic: string;
   difficulty: 'easy' | 'medium' | 'hard';
+  displayNumber?: number; // Optional display number for sequential numbering
 }
 
 interface TestQuestionProps {
@@ -49,6 +50,9 @@ export function TestQuestion({
     setIsSubmitted(true);
   };
 
+  // Use displayNumber if available, otherwise use id
+  const displayNumber = question.displayNumber !== undefined ? question.displayNumber : question.id;
+
   return (
     <div className={cn(
       "bg-white rounded-xl p-6 shadow-sm border border-border/60 transition-all",
@@ -57,7 +61,7 @@ export function TestQuestion({
       <div className="space-y-4">
         <div className="flex justify-between items-start">
           <div>
-            <h3 className="text-lg font-medium">Question {question.id}</h3>
+            <h3 className="text-lg font-medium">Question {displayNumber}</h3>
             <div className="flex items-center gap-2 mt-1">
               <span className={cn(
                 "inline-flex px-2 py-1 text-xs font-medium rounded-full",

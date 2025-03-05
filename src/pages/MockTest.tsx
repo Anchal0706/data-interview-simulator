@@ -1,107 +1,130 @@
 
 import { useState, useEffect } from 'react';
-import { mockTestQuestions, Question } from '@/data/questions';
+import { useNavigate } from 'react-router-dom';
 import { TestQuestion } from '@/components/TestQuestion';
 import Navbar from '@/components/Navbar';
-import { toast } from 'sonner';
+import { allQuestions, topicNames } from '@/data/questions';
 
-interface QuestionFeedback {
-  [id: number]: {
-    isCorrect: boolean;
-    correctAnswer: string;
-    explanation: string;
-  };
-}
+// Create combined test questions from all topics
+const createMockTestQuestions = () => {
+  const mockQuestions = [];
+  const topicsArray = Object.keys(allQuestions);
+  
+  // Get 1-2 random questions from each topic
+  for (const topic of topicsArray) {
+    const topicQuestions = allQuestions[topic];
+    if (topicQuestions && topicQuestions.length > 0) {
+      // Get 1-2 random questions
+      const numToSelect = Math.min(2, topicQuestions.length);
+      const selectedIndices = new Set<number>();
+      
+      while (selectedIndices.size < numToSelect) {
+        const randIndex = Math.floor(Math.random() * topicQuestions.length);
+        selectedIndices.add(randIndex);
+      }
+      
+      // Add selected questions
+      Array.from(selectedIndices).forEach(index => {
+        mockQuestions.push({
+          ...topicQuestions[index],
+          topicName: topicNames[topic]
+        });
+      });
+    }
+  }
+  
+  // Shuffle all questions
+  for (let i = mockQuestions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [mockQuestions[i], mockQuestions[j]] = [mockQuestions[j], mockQuestions[i]];
+  }
+  
+  // Add sequential display numbers
+  return mockQuestions.map((q, index) => ({
+    ...q,
+    displayNumber: index + 1
+  }));
+};
 
 const MockTest = () => {
-  const [answers, setAnswers] = useState<{[id: number]: string}>({});
-  const [feedback, setFeedback] = useState<QuestionFeedback>({});
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [score, setScore] = useState<{correct: number, total: number}>({ correct: 0, total: 0 });
-
+  const navigate = useNavigate();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [answers, setAnswers] = useState<{id: number, answerIndex: number}[]>([]);
+  const [testCompleted, setTestCompleted] = useState(false);
+  const [feedbacks, setFeedbacks] = useState<{
+    [key: number]: {
+      isCorrect: boolean;
+      correctAnswerIndex: number;
+      explanation: string;
+    }
+  }>({});
+  
   useEffect(() => {
     window.scrollTo(0, 0);
+    const mockQuestions = createMockTestQuestions();
+    setQuestions(mockQuestions);
   }, []);
-
-  const handleAnswerSubmit = (id: number, answer: string) => {
-    setAnswers(prev => ({...prev, [id]: answer}));
+  
+  const handleAnswerSubmit = (id: number, answerIndex: number) => {
+    const questionIndex = questions.findIndex(q => q.id === id);
+    const question = questions[questionIndex];
+    const isCorrect = answerIndex === question.correctAnswerIndex;
     
-    // Simple evaluation - in a real app, this would be more sophisticated
-    const question = mockTestQuestions.find(q => q.id === id);
-    if (!question) return;
-    
-    const isCorrect = evaluateAnswer(answer, question.correctAnswer);
-    
-    setFeedback(prev => ({
-      ...prev, 
+    // Save answer and feedback
+    setAnswers(prev => [...prev.filter(a => a.id !== id), { id, answerIndex }]);
+    setFeedbacks(prev => ({
+      ...prev,
       [id]: {
         isCorrect,
-        correctAnswer: question.correctAnswer,
+        correctAnswerIndex: question.correctAnswerIndex,
         explanation: question.explanation
       }
     }));
     
-    toast(isCorrect ? 'Correct answer!' : 'Incorrect answer', {
-      description: isCorrect 
-        ? 'Great job! Keep going.' 
-        : 'Review the feedback to learn the correct answer.',
-      position: 'bottom-center',
-      duration: 3000
-    });
+    // Track for progress page
+    sessionStorage.setItem(`mockResult_${id}`, isCorrect.toString());
     
-    // Check if all questions are answered
-    const answeredCount = Object.keys(answers).length + 1; // +1 for current answer
-    if (answeredCount === mockTestQuestions.length) {
-      calculateFinalScore();
+    // Move to next question after a short delay
+    if (currentQuestionIndex < questions.length - 1 && !testCompleted) {
+      setTimeout(() => {
+        setCurrentQuestionIndex(prev => prev + 1);
+        window.scrollTo(0, 0);
+      }, 800);
     }
   };
   
-  const evaluateAnswer = (userAnswer: string, correctAnswer: string): boolean => {
-    // This is a simplified evaluation. In a real app, you might use:
-    // - NLP techniques for more sophisticated text comparison
-    // - Keyword matching for technical terms
-    // - Semantic similarity metrics
+  const handleTestComplete = () => {
+    setTestCompleted(true);
     
-    // Convert to lowercase and remove punctuation for comparison
-    const normalizeText = (text: string) => 
-      text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+    // Save mock test results for progress tracking
+    const mockResults = answers.map(answer => {
+      const question = questions.find(q => q.id === answer.id);
+      return {
+        questionId: answer.id,
+        answerIndex: answer.answerIndex,
+        topic: question.topic,
+        isCorrect: answer.answerIndex === question.correctAnswerIndex
+      };
+    });
     
-    const normalizedUser = normalizeText(userAnswer);
-    const normalizedCorrect = normalizeText(correctAnswer);
+    sessionStorage.setItem('mockTestResults', JSON.stringify(mockResults));
     
-    // Check if key terms from the correct answer appear in user answer
-    const keyTerms = normalizedCorrect.split(' ')
-      .filter(word => word.length > 4) // Only consider significant words
-      .slice(0, 5); // Take the first few key terms
-      
-    const matchCount = keyTerms.filter(term => normalizedUser.includes(term)).length;
-    const matchRatio = matchCount / keyTerms.length;
-    
-    return matchRatio >= 0.4; // Consider it correct if 40% of key terms match
+    // Navigate to results page
+    navigate('/mock-test/results');
   };
   
-  const calculateFinalScore = () => {
-    const correctAnswers = Object.values(feedback).filter(f => f.isCorrect).length;
-    setScore({
-      correct: correctAnswers,
-      total: mockTestQuestions.length
-    });
-    setIsCompleted(true);
-    
-    toast.success('Mock test completed!', {
-      description: `You scored ${correctAnswers} out of ${mockTestQuestions.length} questions.`,
-      position: 'bottom-center',
-      duration: 5000
-    });
-  };
-  
-  const resetTest = () => {
-    setAnswers({});
-    setFeedback({});
-    setIsCompleted(false);
-    setScore({ correct: 0, total: 0 });
-    window.scrollTo(0, 0);
-  };
+  // If questions aren't loaded yet
+  if (questions.length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
+        <Navbar />
+        <div className="pt-32 pb-20 px-6 flex justify-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
@@ -109,48 +132,103 @@ const MockTest = () => {
       
       <div className="pt-32 pb-20 px-6">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center space-y-6 mb-12 animate-fade-up">
-            <h1 className="text-3xl font-bold tracking-tight">Data Science Mock Interview</h1>
+          <div className="text-center mb-12 space-y-4">
+            <h1 className="text-3xl font-bold">Full Mock Interview</h1>
             <p className="text-muted-foreground">
-              Answer each question as you would in a real interview. You'll receive immediate feedback after submitting each answer.
+              This mock test includes questions from all topics to simulate a real interview.
             </p>
+            
+            {/* Progress bar */}
+            <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+              <div 
+                className="bg-primary h-2.5 rounded-full transition-all duration-300"
+                style={{ width: `${(answers.length / questions.length) * 100}%` }} 
+              ></div>
+            </div>
+            
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span>Question {currentQuestionIndex + 1} of {questions.length}</span>
+              <span>{answers.length} answered</span>
+            </div>
           </div>
           
-          {isCompleted && (
-            <div className="glass-card rounded-xl p-8 text-center space-y-6 mb-12 animate-fade-down">
-              <h2 className="text-2xl font-bold">Your Results</h2>
-              <div className="text-5xl font-bold text-primary">
-                {score.correct} / {score.total}
+          {testCompleted ? (
+            <div className="space-y-12">
+              <h2 className="text-2xl font-bold text-center">Review Your Answers</h2>
+              
+              {questions.map((question, index) => (
+                <TestQuestion
+                  key={question.id}
+                  question={question}
+                  onAnswerSubmit={() => {}} // No-op since we're in review mode
+                  userAnswerIndex={answers.find(a => a.id === question.id)?.answerIndex}
+                  feedback={feedbacks[question.id]}
+                  showFeedback={true}
+                />
+              ))}
+              
+              <div className="flex justify-center">
+                <button
+                  onClick={() => navigate('/progress')}
+                  className="primary-button"
+                >
+                  View Progress Dashboard
+                </button>
               </div>
-              <p className="text-muted-foreground">
-                {score.correct === score.total 
-                  ? "Perfect score! You're ready for that interview!" 
-                  : `You've done well! Review your answers to improve further.`}
-              </p>
-              <button onClick={resetTest} className="primary-button mt-4">
-                Restart Test
-              </button>
+            </div>
+          ) : (
+            <div className="space-y-8">
+              <TestQuestion
+                question={questions[currentQuestionIndex]}
+                onAnswerSubmit={handleAnswerSubmit}
+                userAnswerIndex={answers.find(a => a.id === questions[currentQuestionIndex].id)?.answerIndex}
+                feedback={feedbacks[questions[currentQuestionIndex].id]}
+                showFeedback={!!feedbacks[questions[currentQuestionIndex].id]}
+              />
+              
+              <div className="flex flex-wrap justify-between gap-4 mt-8">
+                <button
+                  onClick={() => setCurrentQuestionIndex(Math.max(0, currentQuestionIndex - 1))}
+                  className="secondary-button"
+                  disabled={currentQuestionIndex === 0}
+                >
+                  Previous
+                </button>
+                
+                <div className="flex gap-4">
+                  {currentQuestionIndex < questions.length - 1 ? (
+                    <button
+                      onClick={() => {
+                        if (answers.find(a => a.id === questions[currentQuestionIndex].id)) {
+                          setCurrentQuestionIndex(currentQuestionIndex + 1);
+                          window.scrollTo(0, 0);
+                        }
+                      }}
+                      className="primary-button"
+                      disabled={!answers.find(a => a.id === questions[currentQuestionIndex].id)}
+                    >
+                      Next
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleTestComplete}
+                      className="primary-button"
+                      disabled={answers.length < questions.length}
+                    >
+                      Complete Test
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           )}
-          
-          <div className="space-y-8">
-            {mockTestQuestions.map((question) => (
-              <TestQuestion
-                key={question.id}
-                question={question}
-                onAnswerSubmit={handleAnswerSubmit}
-                feedback={feedback[question.id]}
-                className="animate-fade-up"
-              />
-            ))}
-          </div>
         </div>
       </div>
       
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-border/60">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} DataInterviewPro. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} DataCrack. All rights reserved.</p>
         </div>
       </footer>
     </div>
