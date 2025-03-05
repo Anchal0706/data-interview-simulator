@@ -2,13 +2,18 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from "@/lib/utils";
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogIn } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAuth } from '@/contexts/AuthContext';
+import LoginModal from './LoginModal';
+import UserMenu from './UserMenu';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { isAuthenticated } = useAuth();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -84,15 +89,31 @@ export default function Navbar() {
           </button>
         )}
         
-        {/* CTA Button - Hide on mobile when menu is open */}
-        {(!isMobile || !mobileMenuOpen) && (
-          <Link 
-            to="/mock-test" 
-            className="primary-button md:block"
-          >
-            Start Practice
-          </Link>
-        )}
+        {/* Authentication Actions */}
+        <div className="flex items-center space-x-4">
+          {/* CTA Button - Hide on mobile when menu is open */}
+          {(!isMobile || !mobileMenuOpen) && (
+            <>
+              {isAuthenticated ? (
+                <UserMenu />
+              ) : (
+                <button 
+                  onClick={() => setLoginModalOpen(true)}
+                  className="flex items-center gap-2 text-foreground/80 hover:text-foreground transition-colors"
+                >
+                  <LogIn size={18} />
+                  <span className="hidden md:inline">Log in</span>
+                </button>
+              )}
+              <Link 
+                to="/mock-test" 
+                className="primary-button md:block"
+              >
+                Start Practice
+              </Link>
+            </>
+          )}
+        </div>
       </div>
       
       {/* Mobile Menu */}
@@ -140,6 +161,26 @@ export default function Navbar() {
           >
             About
           </Link>
+          {isAuthenticated ? (
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+              }}
+              className="text-foreground/80 hover:text-foreground transition-colors py-2 text-left"
+            >
+              My Account
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setLoginModalOpen(true);
+                setMobileMenuOpen(false);
+              }}
+              className="text-foreground/80 hover:text-foreground transition-colors py-2 text-left"
+            >
+              Log in
+            </button>
+          )}
           <Link 
             to="/mock-test" 
             className="primary-button w-full text-center py-2.5"
@@ -149,6 +190,9 @@ export default function Navbar() {
           </Link>
         </div>
       )}
+      
+      {/* Login Modal */}
+      <LoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
     </nav>
   );
 }

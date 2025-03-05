@@ -46,7 +46,6 @@ const Contact = () => {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Contact Information */}
             <div className="md:col-span-1 space-y-8">
               <div className="bg-white rounded-lg shadow-lg p-8 animate-fade-up">
                 <h2 className="text-2xl font-semibold mb-6">Get In Touch</h2>
@@ -69,8 +68,8 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-medium">Phone</h3>
-                      <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                      <p className="text-muted-foreground">+1 (555) 765-4321</p>
+                      <p className="text-muted-foreground">+91 75945 55659</p>
+                      <p className="text-muted-foreground">+91 84445 45679</p>
                     </div>
                   </div>
                   
@@ -132,7 +131,6 @@ const Contact = () => {
               </div>
             </div>
             
-            {/* Contact Form */}
             <div className="md:col-span-2">
               <div className="bg-white rounded-lg shadow-lg p-8 animate-fade-up">
                 <h2 className="text-2xl font-semibold mb-6">Send Us a Message</h2>
@@ -254,7 +252,6 @@ const Contact = () => {
         </div>
       </div>
       
-      {/* Footer */}
       <footer className="py-12 px-6 border-t border-border/60">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} DataScienceInterviewPrep. All rights reserved.</p>
