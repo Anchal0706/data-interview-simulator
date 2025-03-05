@@ -16,9 +16,7 @@ const TopicTest = () => {
   const navigate = useNavigate();
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  
-  const questions = allQuestions[topic] || [];
-  const topicName = topicNames[topic] || 'Unknown Topic';
+  const [questionSet, setQuestionSet] = useState<any[]>([]);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -27,14 +25,59 @@ const TopicTest = () => {
     if (!allQuestions[topic]) {
       toast.error('Topic not found');
       navigate('/topic-selection');
+      return;
     }
+
+    // Get previously used question IDs for this topic
+    const usedQuestionsKey = `${topic}UsedQuestions`;
+    const usedQuestionIdsStr = localStorage.getItem(usedQuestionsKey);
+    const usedQuestionIds = usedQuestionIdsStr ? JSON.parse(usedQuestionIdsStr) : [];
+    
+    // Get all available questions for this topic
+    const allTopicQuestions = allQuestions[topic] || [];
+    
+    // Filter out previously used questions if possible
+    let availableQuestions = allTopicQuestions.filter(q => !usedQuestionIds.includes(q.id));
+    
+    // If we don't have enough unused questions, reset and use all questions
+    if (availableQuestions.length < 5) {
+      availableQuestions = allTopicQuestions;
+      localStorage.setItem(usedQuestionsKey, JSON.stringify([]));
+    }
+    
+    // Randomly select 5 questions (or fewer if not enough available)
+    const selectedQuestions = [];
+    const tempAvailable = [...availableQuestions];
+    const questionsToSelect = Math.min(5, tempAvailable.length);
+    
+    for (let i = 0; i < questionsToSelect; i++) {
+      const randomIndex = Math.floor(Math.random() * tempAvailable.length);
+      selectedQuestions.push(tempAvailable[randomIndex]);
+      // Remove selected question from temp array to avoid duplicates
+      tempAvailable.splice(randomIndex, 1);
+    }
+    
+    // Save selected question IDs to indicate they've been used
+    const newUsedIds = [
+      ...usedQuestionIds,
+      ...selectedQuestions.map(q => q.id)
+    ];
+    localStorage.setItem(usedQuestionsKey, JSON.stringify(newUsedIds));
+    
+    // Set the question set for this test
+    setQuestionSet(selectedQuestions);
   }, [topic, navigate]);
 
   const handleAnswerSubmit = (id: number, answerIndex: number) => {
     setAnswers(prev => [...prev.filter(a => a.questionId !== id), { questionId: id, answerIndex }]);
     
+    // Store if the answer was correct for progress tracking
+    const currentQuestion = questionSet[currentQuestionIndex];
+    const isCorrect = answerIndex === currentQuestion.correctAnswerIndex;
+    sessionStorage.setItem(`${topic}Result_${id}`, isCorrect.toString());
+    
     // If not the last question, advance to next question
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < questionSet.length - 1) {
       setTimeout(() => {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -44,7 +87,7 @@ const TopicTest = () => {
   
   const handleSubmitTest = () => {
     // Check if all questions are answered
-    if (answers.length < questions.length) {
+    if (answers.length < questionSet.length) {
       toast.error('Please answer all questions before submitting');
       return;
     }
@@ -57,7 +100,7 @@ const TopicTest = () => {
   };
   
   // If topic doesn't exist or questions aren't loaded
-  if (questions.length === 0) {
+  if (questionSet.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
         <Navbar />
@@ -75,7 +118,7 @@ const TopicTest = () => {
       <div className="pt-32 pb-20 px-6">
         <div className="max-w-3xl mx-auto">
           <div className="text-center space-y-6 mb-12 animate-fade-up">
-            <h1 className="text-3xl font-bold tracking-tight">{topicName} Interview</h1>
+            <h1 className="text-3xl font-bold tracking-tight">{topicNames[topic]} Interview</h1>
             <p className="text-muted-foreground">
               Answer each multiple-choice question. Select the best option and submit your answer.
             </p>
@@ -84,21 +127,21 @@ const TopicTest = () => {
             <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
               <div 
                 className="bg-primary h-2.5 rounded-full transition-all duration-300"
-                style={{ width: `${(answers.length / questions.length) * 100}%` }} 
+                style={{ width: `${(answers.length / questionSet.length) * 100}%` }} 
               ></div>
             </div>
             <p className="text-sm text-muted-foreground">
-              Question {currentQuestionIndex + 1} of {questions.length}
+              Question {currentQuestionIndex + 1} of {questionSet.length}
             </p>
           </div>
           
           <div className="space-y-8">
             {/* Only show current question */}
             <TestQuestion
-              key={questions[currentQuestionIndex].id}
-              question={questions[currentQuestionIndex]}
+              key={questionSet[currentQuestionIndex].id}
+              question={questionSet[currentQuestionIndex]}
               onAnswerSubmit={handleAnswerSubmit}
-              userAnswerIndex={answers.find(a => a.questionId === questions[currentQuestionIndex].id)?.answerIndex}
+              userAnswerIndex={answers.find(a => a.questionId === questionSet[currentQuestionIndex].id)?.answerIndex}
               className="animate-fade-up"
             />
             
@@ -112,10 +155,10 @@ const TopicTest = () => {
                 Previous
               </button>
               
-              {currentQuestionIndex < questions.length - 1 ? (
+              {currentQuestionIndex < questionSet.length - 1 ? (
                 <button
                   onClick={() => {
-                    if (answers.find(a => a.questionId === questions[currentQuestionIndex].id)) {
+                    if (answers.find(a => a.questionId === questionSet[currentQuestionIndex].id)) {
                       setCurrentQuestionIndex(currentQuestionIndex + 1);
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     } else {
@@ -130,7 +173,7 @@ const TopicTest = () => {
                 <button
                   onClick={handleSubmitTest}
                   className="primary-button"
-                  disabled={answers.length < questions.length}
+                  disabled={answers.length < questionSet.length}
                 >
                   Submit Test
                 </button>
@@ -143,7 +186,7 @@ const TopicTest = () => {
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-border/60">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} DataInterviewPro. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} DataScienceInterviewPrep. All rights reserved.</p>
         </div>
       </footer>
     </div>

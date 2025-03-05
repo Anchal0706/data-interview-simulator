@@ -36,7 +36,7 @@ export default function Navbar() {
           to="/" 
           className="font-semibold text-xl tracking-tight hover:opacity-80 transition-opacity"
         >
-          DataInterviewPro
+          DataScienceInterviewPrep
         </Link>
         
         <div className="hidden md:flex space-x-8 items-center">
@@ -45,6 +45,9 @@ export default function Navbar() {
           </Link>
           <Link to="/mock-test" className="text-foreground/80 hover:text-foreground transition-colors">
             Mock Test
+          </Link>
+          <Link to="/progress" className="text-foreground/80 hover:text-foreground transition-colors">
+            Progress
           </Link>
           <Link to="/sources" className="text-foreground/80 hover:text-foreground transition-colors">
             Resources

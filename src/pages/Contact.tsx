@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import { toast } from 'sonner';
@@ -59,8 +58,8 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-medium">Email</h3>
-                      <p className="text-muted-foreground">support@datainterview.pro</p>
-                      <p className="text-muted-foreground">info@datainterview.pro</p>
+                      <p className="text-muted-foreground">akankshashivani1808@gmail.com</p>
+                      <p className="text-muted-foreground">anchalmishra028@gmail.com</p>
                     </div>
                   </div>
                   
@@ -82,8 +81,8 @@ const Contact = () => {
                     <div>
                       <h3 className="font-medium">Office</h3>
                       <p className="text-muted-foreground">
-                        123 Data Street, Suite 456<br />
-                        San Francisco, CA 94105
+                        123 Y-Block<br />
+                        Kanpur 208014
                       </p>
                     </div>
                   </div>
@@ -258,7 +257,7 @@ const Contact = () => {
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-border/60">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} DataInterviewPro. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} DataScienceInterviewPrep. All rights reserved.</p>
         </div>
       </footer>
     </div>

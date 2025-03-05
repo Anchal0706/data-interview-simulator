@@ -72,7 +72,7 @@ const TopicSelection = () => {
           <div className="text-center space-y-6 mb-16 animate-fade-up">
             <h1 className="text-4xl font-bold tracking-tight">Choose Your Interview Topic</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Select a topic below to start a mock interview. Each test contains 5 questions ranging from easy to hard. 
+              Select a topic below to start a mock interview. Each test contains 5 unique questions ranging from easy to hard. 
               You'll receive detailed feedback after completing all questions.
             </p>
           </div>
@@ -95,7 +95,7 @@ const TopicSelection = () => {
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-border/60">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} DataInterviewPro. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} DataScienceInterviewPrep. All rights reserved.</p>
         </div>
       </footer>
     </div>

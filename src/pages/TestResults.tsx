@@ -24,7 +24,6 @@ const TestResults = () => {
   const [results, setResults] = useState<QuestionResult[]>([]);
   const [score, setScore] = useState({ correct: 0, total: 0 });
   
-  const questions = allQuestions[topic] || [];
   const topicName = topicNames[topic] || 'Unknown Topic';
   
   useEffect(() => {
@@ -47,16 +46,30 @@ const TestResults = () => {
     
     try {
       const answers: Answer[] = JSON.parse(storedAnswers);
-      evaluateAnswers(answers);
+      
+      // Get the question set used for this test
+      // In a real app, you'd store this in session storage when taking the test
+      // For this example, we'll get the questions from the global questions
+      const questionIds = answers.map(a => a.questionId);
+      const questionSet = [];
+      
+      // Find the questions that were answered
+      for (const q of allQuestions[topic] || []) {
+        if (questionIds.includes(q.id)) {
+          questionSet.push(q);
+        }
+      }
+      
+      evaluateAnswers(answers, questionSet);
     } catch (e) {
       toast.error('Error loading test results');
       navigate(`/mock-test/${topic}`);
     }
   }, [topic, navigate]);
   
-  const evaluateAnswers = (answers: Answer[]) => {
+  const evaluateAnswers = (answers: Answer[], questionSet: any[]) => {
     // Evaluate each answer
-    const questionResults = questions.map(question => {
+    const questionResults = questionSet.map(question => {
       const answer = answers.find(a => a.questionId === question.id);
       if (!answer) return null;
       
@@ -75,12 +88,12 @@ const TestResults = () => {
     const correctCount = questionResults.filter(r => r.isCorrect).length;
     setScore({
       correct: correctCount,
-      total: questions.length
+      total: questionSet.length
     });
     
     // Show toast with score
     toast.success('Test results ready', {
-      description: `You scored ${correctCount} out of ${questions.length} questions.`,
+      description: `You scored ${correctCount} out of ${questionSet.length} questions.`,
       position: 'bottom-center',
       duration: 5000
     });
@@ -183,6 +196,10 @@ const TestResults = () => {
               <Link to={`/mock-test/${topic}`} className="primary-button">
                 Retake This Test
               </Link>
+              <Link to="/progress" className="secondary-button flex items-center gap-2">
+                <BarChart size={18} />
+                View Progress
+              </Link>
             </div>
           </div>
           
@@ -211,7 +228,7 @@ const TestResults = () => {
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-border/60">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} DataInterviewPro. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} DataScienceInterviewPrep. All rights reserved.</p>
         </div>
       </footer>
     </div>
