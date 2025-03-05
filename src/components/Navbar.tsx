@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cn } from "@/lib/utils";
 import { Menu, X, LogIn } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -14,7 +14,8 @@ export default function Navbar() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const isMobile = useIsMobile();
   const { isAuthenticated } = useAuth();
-  
+  const navigate = useNavigate();
+
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
@@ -33,6 +34,14 @@ export default function Navbar() {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  // Function to handle protected link clicks
+  const handleProtectedLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    if (!isAuthenticated) {
+      e.preventDefault();
+      setLoginModalOpen(true);
+    }
   };
 
   return (
@@ -57,21 +66,93 @@ export default function Navbar() {
           <Link to="/" className="text-foreground/80 hover:text-foreground transition-colors">
             Home
           </Link>
-          <Link to="/mock-test" className="text-foreground/80 hover:text-foreground transition-colors">
-            Mock Test
-          </Link>
-          <Link to="/progress" className="text-foreground/80 hover:text-foreground transition-colors">
-            Progress
-          </Link>
-          <Link to="/sources" className="text-foreground/80 hover:text-foreground transition-colors">
-            Resources
-          </Link>
-          <Link to="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
-            Contact
-          </Link>
-          <Link to="/about" className="text-foreground/80 hover:text-foreground transition-colors">
-            About
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link 
+                to="/mock-test" 
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Mock Test
+              </Link>
+              <Link 
+                to="/progress" 
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Progress
+              </Link>
+              <Link 
+                to="/sources" 
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Resources
+              </Link>
+              <Link 
+                to="/contact" 
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Contact
+              </Link>
+              <Link 
+                to="/about" 
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                About
+              </Link>
+            </>
+          ) : (
+            <>
+              <a 
+                href="#" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLoginModalOpen(true);
+                }}
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Mock Test
+              </a>
+              <a 
+                href="#" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLoginModalOpen(true);
+                }}
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Progress
+              </a>
+              <a 
+                href="#" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLoginModalOpen(true);
+                }}
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Resources
+              </a>
+              <a 
+                href="#" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLoginModalOpen(true);
+                }}
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Contact
+              </a>
+              <a 
+                href="#" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLoginModalOpen(true);
+                }}
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                About
+              </a>
+            </>
+          )}
         </div>
         
         {/* Mobile Menu Button */}
@@ -105,12 +186,21 @@ export default function Navbar() {
                   <span className="hidden md:inline">Log in</span>
                 </button>
               )}
-              <Link 
-                to="/mock-test" 
-                className="primary-button md:block"
-              >
-                Start Practice
-              </Link>
+              {isAuthenticated ? (
+                <Link 
+                  to="/mock-test" 
+                  className="primary-button md:block"
+                >
+                  Start Practice
+                </Link>
+              ) : (
+                <button 
+                  onClick={() => setLoginModalOpen(true)}
+                  className="primary-button md:block"
+                >
+                  Start Practice
+                </button>
+              )}
             </>
           )}
         </div>
@@ -126,50 +216,113 @@ export default function Navbar() {
           >
             Home
           </Link>
-          <Link 
-            to="/mock-test" 
-            className="text-foreground/80 hover:text-foreground transition-colors py-2"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Mock Test
-          </Link>
-          <Link 
-            to="/progress" 
-            className="text-foreground/80 hover:text-foreground transition-colors py-2"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Progress
-          </Link>
-          <Link 
-            to="/sources" 
-            className="text-foreground/80 hover:text-foreground transition-colors py-2"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Resources
-          </Link>
-          <Link 
-            to="/contact" 
-            className="text-foreground/80 hover:text-foreground transition-colors py-2"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Contact
-          </Link>
-          <Link 
-            to="/about" 
-            className="text-foreground/80 hover:text-foreground transition-colors py-2"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            About
-          </Link>
+          
           {isAuthenticated ? (
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-              }}
+            <>
+              <Link 
+                to="/mock-test" 
+                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Mock Test
+              </Link>
+              <Link 
+                to="/progress" 
+                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Progress
+              </Link>
+              <Link 
+                to="/sources" 
+                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Resources
+              </Link>
+              <Link 
+                to="/contact" 
+                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </Link>
+              <Link 
+                to="/about" 
+                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </Link>
+            </>
+          ) : (
+            <>
+              <a 
+                href="#" 
+                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  setLoginModalOpen(true);
+                }}
+              >
+                Mock Test
+              </a>
+              <a 
+                href="#" 
+                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  setLoginModalOpen(true);
+                }}
+              >
+                Progress
+              </a>
+              <a 
+                href="#" 
+                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  setLoginModalOpen(true);
+                }}
+              >
+                Resources
+              </a>
+              <a 
+                href="#" 
+                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  setLoginModalOpen(true);
+                }}
+              >
+                Contact
+              </a>
+              <a 
+                href="#" 
+                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  setLoginModalOpen(true);
+                }}
+              >
+                About
+              </a>
+            </>
+          )}
+          
+          {isAuthenticated ? (
+            <Link 
+              to="/progress" 
               className="text-foreground/80 hover:text-foreground transition-colors py-2 text-left"
+              onClick={() => setMobileMenuOpen(false)}
             >
               My Account
-            </button>
+            </Link>
           ) : (
             <button
               onClick={() => {
@@ -181,13 +334,26 @@ export default function Navbar() {
               Log in
             </button>
           )}
-          <Link 
-            to="/mock-test" 
-            className="primary-button w-full text-center py-2.5"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Start Practice
-          </Link>
+          
+          {isAuthenticated ? (
+            <Link 
+              to="/mock-test" 
+              className="primary-button w-full text-center py-2.5"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Start Practice
+            </Link>
+          ) : (
+            <button 
+              onClick={() => {
+                setLoginModalOpen(true);
+                setMobileMenuOpen(false);
+              }}
+              className="primary-button w-full text-center py-2.5"
+            >
+              Start Practice
+            </button>
+          )}
         </div>
       )}
       
