@@ -3,7 +3,7 @@ import React from 'react';
 import Navbar from '@/components/Navbar';
 import { Link } from 'react-router-dom';
 import { FeatureCard } from '@/components/FeatureCard';
-import { BrainCircuit, Code, BookOpen, Trophy, BookMarked, Globe } from 'lucide-react';
+import { BrainCircuit, Code, BookOpen, Trophy, BookMarked, Globe, Construction, Rocket } from 'lucide-react';
 
 const About = () => {
   return (
@@ -15,13 +15,47 @@ const About = () => {
           <div className="text-center space-y-6 mb-16 animate-fade-up">
             <h1 className="text-4xl font-bold tracking-tight">About DataInterviewPro</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Your ultimate companion for data science interview preparation.
-              We help aspiring data professionals ace their technical interviews with 
-              practical, realistic practice questions.
+              An initiative by Akanksha and Anchal to help aspiring data professionals 
+              prepare for technical interviews with practical, realistic practice questions.
             </p>
           </div>
           
           <div className="space-y-16">
+            {/* Founders Section (New) */}
+            <section className="space-y-8">
+              <h2 className="text-3xl font-bold tracking-tight text-center">Our Founders</h2>
+              
+              <div className="grid gap-8 md:grid-cols-2">
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-semibold mb-3">Akanksha</h3>
+                  <p className="text-muted-foreground mb-4">
+                    A passionate data scientist with experience in machine learning and 
+                    statistical analysis. Having gone through numerous technical interviews,
+                    Akanksha recognized the need for structured interview preparation resources
+                    for data professionals.
+                  </p>
+                  <div className="flex items-center text-primary">
+                    <Rocket size={18} className="mr-2" />
+                    <span className="font-medium">Co-founder & Data Science Expert</span>
+                  </div>
+                </div>
+                
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-semibold mb-3">Anchal</h3>
+                  <p className="text-muted-foreground mb-4">
+                    With a background in software engineering and data engineering, Anchal
+                    brings technical expertise and a deep understanding of industry interview
+                    processes. Her focus is on building practical tools that help candidates
+                    develop real-world skills.
+                  </p>
+                  <div className="flex items-center text-primary">
+                    <Rocket size={18} className="mr-2" />
+                    <span className="font-medium">Co-founder & Technical Lead</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+            
             {/* Mission Statement */}
             <section className="space-y-6">
               <h2 className="text-3xl font-bold tracking-tight text-center">Our Mission</h2>
@@ -30,6 +64,26 @@ const About = () => {
                 high-quality practice materials for technical interviews. Our goal is to help you 
                 build confidence, identify knowledge gaps, and ultimately land your dream job.
               </p>
+            </section>
+            
+            {/* Website Status Section (New) */}
+            <section className="space-y-6 bg-blue-50 p-6 rounded-lg">
+              <div className="flex justify-center mb-4">
+                <div className="inline-flex p-3 rounded-full bg-primary/10 text-primary">
+                  <Construction size={36} />
+                </div>
+              </div>
+              <h2 className="text-3xl font-bold tracking-tight text-center">Under Development</h2>
+              <p className="text-center max-w-3xl mx-auto">
+                DataInterviewPro is currently under active development. We're continuously adding
+                new features, practice questions, and resources. Thank you for your patience as we
+                work to create the best possible interview preparation platform for data professionals.
+              </p>
+              <div className="text-center mt-4">
+                <p className="text-sm text-muted-foreground">
+                  Have suggestions or feedback? <Link to="/contact" className="text-primary hover:underline">Contact us</Link>
+                </p>
+              </div>
             </section>
             
             {/* Features */}
