@@ -29,17 +29,21 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
       if (activeTab === 'login') {
         await login(email, password);
         toast.success('Login successful!');
+        onClose();
       } else {
         await register(name, email, password);
         toast.success('Registration successful!');
+        onClose();
       }
-      onClose();
     } catch (error) {
+      console.error("Authentication error:", error);
+      let errorMessage = 'Authentication failed';
+      
       if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error('Authentication failed');
+        errorMessage = error.message;
       }
+      
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

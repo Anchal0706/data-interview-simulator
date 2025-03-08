@@ -51,12 +51,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
         setIsAuthenticated(true);
+        return; // Successfully logged in
       } else {
-        throw new Error('Invalid credentials');
+        throw new Error('Invalid email or password');
       }
     } catch (error) {
+      console.error("Login error:", error);
+      setIsLoading(false);
       if (error instanceof Error) {
-        throw new Error(error.message);
+        throw error; // Re-throw the error to be caught by the component
       }
       throw new Error('Login failed');
     } finally {
@@ -81,8 +84,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(userData);
       setIsAuthenticated(true);
     } catch (error) {
+      console.error("Registration error:", error);
+      setIsLoading(false);
       if (error instanceof Error) {
-        throw new Error(error.message);
+        throw error;
       }
       throw new Error('Registration failed');
     } finally {

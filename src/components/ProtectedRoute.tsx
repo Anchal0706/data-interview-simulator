@@ -23,8 +23,11 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
       } else {
         setShowLoginModal(true);
       }
+    } else {
+      // If user becomes authenticated, hide the login modal
+      setShowLoginModal(false);
     }
-  }, [isAuthenticated, isLoading, navigate, location.pathname]);
+  }, [isAuthenticated, isLoading, location.pathname]);
 
   const handleCloseLoginModal = () => {
     // If user cancels login, redirect them to homepage
